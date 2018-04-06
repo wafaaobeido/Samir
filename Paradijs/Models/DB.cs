@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
@@ -9,7 +10,7 @@ namespace Paradijs.Models
     public class DB
     {
         #region Fields
-       
+
         private string connectionstring()
         {
             string _connectionstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\388227\Desktop\Paradijs\Paradijs\App_Data\Paradij_DB.mdf;Integrated Security=True";
@@ -79,7 +80,7 @@ namespace Paradijs.Models
         {
 
             String query = "SELECT Id, Name, Price FROM Product";
-            
+
 
             var model = new List<Product>();
             using (SqlConnection con = new SqlConnection(connectionstring()))
@@ -87,25 +88,25 @@ namespace Paradijs.Models
                 con.Open();
                 SqlCommand cmd = new SqlCommand(query, con);
                 SqlDataReader rdr = cmd.ExecuteReader();
-                    while (rdr.Read())
-                    {
+                while (rdr.Read())
+                {
                     var product = new Product();
-                        product.Id = Convert.ToInt32(rdr["Id"]);
-                        product.Name = (string)rdr["Name"];
-                        product.Price = Convert.ToInt32(rdr["Price"]);
+                    product.Id = Convert.ToInt32(rdr["Id"]);
+                    product.Name = (string)rdr["Name"];
+                    product.Price = Convert.ToInt32(rdr["Price"]);
 
-                        model.Add(product);
-                    }
+                    model.Add(product);
+                }
 
 
-               
+
             }
             return model;
         }
 
         public List<Product> ViewProductDetails(int id)
         {
-            
+
             String sql = "SELECT  Name, Ingredients FROM Product Where Id = @id";
 
 
@@ -119,10 +120,10 @@ namespace Paradijs.Models
                 while (rdr.Read())
                 {
                     var product = new Product();
-                    
+
                     product.Name = (string)rdr["Name"];
                     product.Ingredients = (string)rdr["Ingredients"];
-                   
+
                     model.Add(product);
                 }
 
@@ -132,7 +133,7 @@ namespace Paradijs.Models
 
         }
 
-        public Product AddProduct( Product product)
+        public Product AddProduct(Product product)
         {
             Product newproduct = product;
 
@@ -143,8 +144,7 @@ namespace Paradijs.Models
             addproduct.Parameters.AddWithValue("@Name", product.Name);
             addproduct.Parameters.AddWithValue("@Ingredients", product.Ingredients);
             addproduct.Parameters.AddWithValue("@Price", product.Price);
-            //addproduct.ExecuteNonQuery();
-       
+
 
             newproduct.Id = Convert.ToInt32(addproduct.ExecuteScalar());
             con.Close();
@@ -259,8 +259,35 @@ namespace Paradijs.Models
 
         #endregion
 
-        #region Photo's
+        #region Images
+
+        public Image AddImage(Image image)
+        {
+            Image newimage = image;
+
+            SqlConnection con = new SqlConnection(connectionstring());
+            con.Open();
+            string query = "INSERT INTO Image(ImagePath, ImageTitle) Values ( @ImagePath, @ImageTitle )";
+            SqlCommand addimage = new SqlCommand
+            {
+                Connection = con,
+                CommandType = CommandType.Text,
+                CommandText = query,
+                Parameters =
+                {
+                    new SqlParameter("@ImagePath", image.ImagePath),
+                    new SqlParameter("@ImageTitle", image.ImageTitle)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                }
+            };
+      
+
+            newimage.Id = Convert.ToInt32(addimage.ExecuteScalar());
+            con.Close();
+            return newimage;
+
+
+         }
 
         #endregion
     }
-}
+}     

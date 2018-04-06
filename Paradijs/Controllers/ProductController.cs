@@ -19,38 +19,16 @@ namespace Paradijs.Controllers
             return View();
         }
 
+
         [HttpPost]
         public ActionResult AddProduct(Product product)
         {
-            Image image = new Image();
-            string filename = Path.GetFileNameWithoutExtension(image.ImageFile.FileName);
-            string extention = Path.GetExtension(image.ImageFile.FileName);
-            filename = filename + DateTime.Now.ToString("yymmssfff") + extention;
-            image.ImagePath = "~/Images/" + filename;
-            filename = Path.Combine(Server.MapPath("~/Images/"), filename);
-            image.ImageFile.SaveAs(filename);
-
 
             Product NewProduct = new Product();
             DB db = new DB();
             NewProduct = db.AddProduct(product);
-
-                //string message = " Account succesvol aangemaakt U kunt nu inloggen.";
-                //ViewBag.Message = message;
-                ViewBag.Status = true;
-                ModelState.Clear();
-                return View(NewProduct);
-          
-
-            //bool message = true;
-            //DB db = new DB();
-            //message = db.AddProduct(product);
-            //ViewBag.Message = message;
-            //ViewBag.Status = true;
-            //ModelState.Clear();
-
-            //Session["Product"] = product;
-            //return View(product);
+            Session["Product"] = NewProduct;
+            return View(product);
         }
 
 
