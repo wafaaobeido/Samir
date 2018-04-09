@@ -152,6 +152,7 @@
     <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Crypto.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -209,6 +210,9 @@
     <Content Include="Views\Product\ViewProducts.cshtml" />
     <Content Include="Views\Product\ViewProductDetails.cshtml" />
     <Content Include="Views\Image\AddImage.cshtml" />
+    <Content Include="Views\Shared\_Layout1.cshtml" />
+    <Content Include="Views\User\Registration.cshtml" />
+    <Content Include="Views\User\VerifyAccount.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />

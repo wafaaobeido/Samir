@@ -16,7 +16,7 @@ namespace Paradijs
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "User", action = "Details", id = UrlParameter.Optional }
+                defaults: new { controller = "Product", action = "AddProduct", id = UrlParameter.Optional }
             );
         }
     }

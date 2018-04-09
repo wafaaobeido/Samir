@@ -20,26 +20,136 @@ namespace Paradijs.Models
         #endregion
 
         #region User
-        public void AddUser()
+
+        // Registration
+
+        public bool IsEmailExists(User user)
         {
-            User user = new User();
             SqlConnection con = new SqlConnection(connectionstring());
-            con.Open(); string query = "INSERT INTO User(FirstName, LastName, Birthday, Adress, Postcode, City, Email, Mobile, Password" +
-             " VALUES (@FirstName, @LastName, @Birthday, @Adress, @Postcode, @City, @Email, @Mobile,  @Password)";
-            SqlCommand cmd = new SqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
-            cmd.Parameters.AddWithValue("@LastName", user.LastName);
-            cmd.Parameters.AddWithValue("@Birthday", user.Birthday);
-            cmd.Parameters.AddWithValue("@Adress", user.Adress);
-            cmd.Parameters.AddWithValue("@Postcode", user.Postcode);
-            cmd.Parameters.AddWithValue("@City", user.City);
-            cmd.Parameters.AddWithValue("@Email", user.Email);
-            cmd.Parameters.AddWithValue("@Mobile", user.Mobile);
-            cmd.Parameters.AddWithValue("@Password", user.Password);
+
+            try
+            {
+                con.Open();
+
+                string query = "SELECT EmailID FROM [User] Where EmailID = @EmailID";
+                SqlCommand checkEmail = new SqlCommand
+                {
+                    Connection = con,
+                    CommandType = CommandType.Text,
+                    CommandText = query,
+                    Parameters =
+                    {
+                        new SqlParameter("@EmailID", user.Email)
+                    }
+                };
+
+                int check = Convert.ToInt32(checkEmail.ExecuteScalar());
+
+                return check > 0;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+        public User AddUser(User user)
+        {
+            var newuser = new User();
+            SqlConnection con = new SqlConnection(connectionstring());
+            con.Open();
+            string query = "INSERT INTO [User](FirstName, LastName, DateOfBirth, Adress, Postcode, City, EmailID, Mobile, Password, ConfirmPassword, IsEmailVerified, ActivationCode)" +
+             " VALUES(@FirstName, @LastName, @DateOfBirth, @Adress, @Postcode, @City, @EmailID, @Mobile,  @Password, @ConfirmPassword, @IsEmailVerified, @ActivationCode)";
+
+            SqlCommand cmd = new SqlCommand
+            {
+                Connection = con,
+                CommandType = CommandType.Text,
+                CommandText = query,
+                Parameters = {
+                    new SqlParameter("@FirstName", user.FirstName),
+            new SqlParameter("@LastName", user.LastName),
+            new SqlParameter("@DateOfBirth", user.DateOfBirth),
+            new SqlParameter("@Adress", user.Adress),
+            new SqlParameter("@Postcode", user.Postcode),
+            new SqlParameter("@City", user.City),
+            new SqlParameter("@EmailID", user.Email),
+            new SqlParameter("@Mobile", user.Mobile),
+            new SqlParameter("@Password", user.Password),
+            new SqlParameter("@ConfirmPassword", user.ConfirmPassword),
+            new SqlParameter("@IsEmailVerified", user.IsEmailVerified),
+            new SqlParameter("@ActivationCode", user.ActivationCode)
+                             }
+
+            };
+
             cmd.ExecuteNonQuery();
+            newuser = user;
             con.Close();
+            return newuser;
         }
 
+        public bool IsActivationCodeExists(User user)
+        {
+            SqlConnection con = new SqlConnection(connectionstring());
+
+            try
+            {
+                con.Open();
+
+                string query = "SELECT ActivationCode FROM [User] Where ActivationCode = @ActivationCode";
+                SqlCommand checkEmail = new SqlCommand
+                {
+                    Connection = con,
+                    CommandType = CommandType.Text,
+                    CommandText = query,
+                    Parameters =
+                    {
+                        new SqlParameter("@ActivationCode", user.ActivationCode)
+                    }
+                };
+
+                int check = Convert.ToInt32(checkEmail.ExecuteScalar());
+
+                return check > 0;
+            }
+            finally
+            {
+                con.Close();
+            }
+
+
+        }
+
+        public void IsValidation(User user)
+        {
+            SqlConnection con = new SqlConnection(connectionstring());
+
+            try
+            {
+                con.Open();
+
+                string query = "Insert into [User] (IsEmailVerified) Values (@IsEmailVerified) where ActivationCode = @ActivationCode";
+                SqlCommand isvalidate = new SqlCommand
+                {
+                    Connection = con,
+                    CommandType = CommandType.Text,
+                    CommandText = query,
+                    Parameters =
+                    {
+                        new SqlParameter("@IsEmailVerified", user.IsEmailVerified),
+                        new SqlParameter("@ValidationCode", user.ActivationCode)
+                    }
+                };
+
+                isvalidate.ExecuteNonQuery();
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        // LogIn
         public void DeleteUser()
         {
             User user = new User();
@@ -56,12 +166,12 @@ namespace Paradijs.Models
         {
             User user = new User();
             SqlConnection con = new SqlConnection(connectionstring());
-            con.Open(); string query = "Update User Set (FirstName = @FirstName, LastName = @LastName, Birthday = @Birthday, Adress =  @Adress, Postcode = @Postcode, City = @City, Email = @Email, Mobile = @Mobile,  Password = @Password) Where Id = @Id";
+            con.Open(); string query = "Update User Set (FirstName = @FirstName, LastName = @LastName, DateOfBirth = @DateOfBirth, Adress =  @Adress, Postcode = @Postcode, City = @City, Email = @Email, Mobile = @Mobile,  Password = @Password) Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", user.Id);
             cmd.Parameters.AddWithValue("@FirstName", user.FirstName);
             cmd.Parameters.AddWithValue("@LasttName", user.LastName);
-            cmd.Parameters.AddWithValue("@Birthday", user.Birthday);
+            cmd.Parameters.AddWithValue("@DatOfBirth", user.DateOfBirth);
             cmd.Parameters.AddWithValue("@Adress", user.Adress);
             cmd.Parameters.AddWithValue("@Postcode", user.Postcode);
             cmd.Parameters.AddWithValue("@City", user.City);
@@ -146,7 +256,8 @@ namespace Paradijs.Models
             addproduct.Parameters.AddWithValue("@Price", product.Price);
 
 
-            newproduct.Id = Convert.ToInt32(addproduct.ExecuteScalar());
+            int x = Convert.ToInt32(addproduct.ExecuteScalar());
+            newproduct.Id = x;
             con.Close();
             return newproduct;
 
@@ -276,18 +387,18 @@ namespace Paradijs.Models
                 Parameters =
                 {
                     new SqlParameter("@ImagePath", image.ImagePath),
-                    new SqlParameter("@ImageTitle", image.ImageTitle)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                    new SqlParameter("@ImageTitle", image.ImageTitle)
                 }
             };
-      
+
 
             newimage.Id = Convert.ToInt32(addimage.ExecuteScalar());
             con.Close();
             return newimage;
 
 
-         }
+        }
 
         #endregion
     }
-}     
+}
