@@ -8,6 +8,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -16,18 +17,29 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Paradijs", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Paradijs", "ViewProducts", "Product", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Home", "ViewProducts", "Product")</li>
+                    @if (Session["UserName"] == null)
+                    {
+                        <li>@Html.ActionLink("Log in", "Login", "User")</li>
+                    }
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container body-content"><br /><br />
+        @if (Session["UserName"] != null)
+        {
+        using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm" }))
+        {
+        <a href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
+        }
+        }
+
         @RenderBody()
         <hr />
         <footer>

@@ -50,6 +50,8 @@ namespace Paradijs.Models
         public int Mobile { get; set; }
         public bool IsEmailVerified { get; set; }
         public Guid ActivationCode { get; set; }
+        [Display(Name = "Remember me")]
+        public bool RememberMe { get; set; }
 
         public List<Order> Orders { get; set; }
         public List<Review> Reviews { get; set; }

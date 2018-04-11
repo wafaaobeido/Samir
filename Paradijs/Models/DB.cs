@@ -97,7 +97,7 @@ namespace Paradijs.Models
                 con.Open();
 
                 string query = "SELECT ActivationCode FROM [User] Where ActivationCode = @ActivationCode";
-                SqlCommand checkEmail = new SqlCommand
+                SqlCommand checkCode = new SqlCommand
                 {
                     Connection = con,
                     CommandType = CommandType.Text,
@@ -108,9 +108,9 @@ namespace Paradijs.Models
                     }
                 };
 
-                int check = Convert.ToInt32(checkEmail.ExecuteScalar());
+                var check = checkCode.ExecuteScalar();
 
-                return check > 0;
+                return check != null;
             }
             finally
             {
@@ -128,7 +128,8 @@ namespace Paradijs.Models
             {
                 con.Open();
 
-                string query = "Insert into [User] (IsEmailVerified) Values (@IsEmailVerified) where ActivationCode = @ActivationCode";
+                string query = "Update [User] Set IsEmailVerified = @IsEmailVerified " +
+                    " where ActivationCode = @ActivationCode";
                 SqlCommand isvalidate = new SqlCommand
                 {
                     Connection = con,
@@ -137,7 +138,7 @@ namespace Paradijs.Models
                     Parameters =
                     {
                         new SqlParameter("@IsEmailVerified", user.IsEmailVerified),
-                        new SqlParameter("@ValidationCode", user.ActivationCode)
+                        new SqlParameter("@ActivationCode", user.ActivationCode)
                     }
                 };
 
@@ -150,6 +151,42 @@ namespace Paradijs.Models
         }
 
         // LogIn
+        public string LogIn(User user)
+        {
+            SqlConnection con = new SqlConnection(connectionstring());
+            User newuser = new User();
+            try
+            {
+                con.Open();
+
+                string query = "SELECT FirstName FROM [User] Where EmailID = @EmailID AND Password = @Password";
+                SqlCommand Logincmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandType = CommandType.Text,
+                    CommandText = query,
+                    Parameters =
+                    {
+                        new SqlParameter("@EmailID", user.Email),
+                        new SqlParameter("@Password", Crypto.Hash(user.Password))
+                    }
+                };
+
+                var name = Logincmd.ExecuteScalar().ToString();
+                //newuser = user;
+                return name;
+               
+
+            }
+            finally
+            {
+                con.Close();
+            }
+
+        }
+
+
+        // Bijwerken users
         public void DeleteUser()
         {
             User user = new User();

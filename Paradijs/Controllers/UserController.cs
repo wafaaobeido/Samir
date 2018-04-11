@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace Paradijs.Controllers
 {
@@ -82,6 +83,9 @@ namespace Paradijs.Controllers
             return View();
         }
 
+        // Verify Account
+
+        [NonAction]
         public void SendVerificationLinkEmail(string EmaiID, string ActivationCode)
         {
             var verifyUrl = "/user/VerifyAccount/" + ActivationCode;
@@ -118,11 +122,8 @@ namespace Paradijs.Controllers
 
                 smtp.Send(message);
 
-         }
+        }
 
-        // Verify Account
-        ///User/VerifyAccount
-        ///     VerifyAccount
         [HttpGet]
         public ActionResult VerifyAccount(string id)
         {
@@ -148,7 +149,6 @@ namespace Paradijs.Controllers
 
         //LogIn Action
 
-
         [HttpGet]
         public ActionResult Login()
         {
@@ -156,12 +156,53 @@ namespace Paradijs.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(User user)
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(User user, string ReturnURL = "")
         {
 
+            DB _database = new DB();
+            
+            string message = "";
+            string username = _database.LogIn(user);
+            if (username != "" && Session["UserName"] == null)
+            {
+                int timeout = user.RememberMe ? 525600 : 20; // 525600 min = 1 year
+                var ticket = new FormsAuthenticationTicket(user.Email, user.RememberMe, timeout);
+                string Encrypted = FormsAuthentication.Encrypt(ticket);
+                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, Encrypted);
+                cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                cookie.HttpOnly = true;
+                Response.Cookies.Add(cookie);
+                Session["UserName"] = username;
+
+                if (Url.IsLocalUrl(ReturnURL))
+                {
+                    return Redirect(ReturnURL);
+                }
+                else
+                {
+                    return RedirectToAction("ViewProducts", "Product");
+                }
+
+            }
+            else
+            {
+                message = "Invalid Credential provider";
+            }
+
+            ViewBag.Message = message;
             return View();
         }
 
         //Logout
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session["UserName"] = null;
+            return RedirectToAction("ViewProducts", "Product");
+        }
     }
 }
