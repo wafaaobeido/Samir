@@ -35,7 +35,7 @@ namespace Paradijs.Controllers
             // Model validation
             if (ModelState.IsValid)
             {
-
+            
                 #region // Email is already Exist
 
                 var IsExist = _database.IsEmailExists(user);
