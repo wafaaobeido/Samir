@@ -19,6 +19,8 @@ namespace Paradijs.Models
 
         #endregion
 
+        #region methodes
+
         #region User
 
         // Registration
@@ -159,12 +161,12 @@ namespace Paradijs.Models
             {
                 con.Open();
 
-                string query = "SELECT FirstName FROM [User] Where EmailID = @EmailID AND Password = @Password";
+                //string query = "SELECT FirstName FROM [User] Where EmailID = @EmailID AND Password = @Password";
                 SqlCommand Logincmd = new SqlCommand
                 {
                     Connection = con,
-                    CommandType = CommandType.Text,
-                    CommandText = query,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "usplogin ",
                     Parameters =
                     {
                         new SqlParameter("@EmailID", user.Email),
@@ -172,9 +174,8 @@ namespace Paradijs.Models
                     }
                 };
 
-                var name = Logincmd.ExecuteScalar().ToString();
-                //newuser = user;
-                return name;
+                var emai = Logincmd.ExecuteScalar().ToString();
+                return emai;
                
 
             }
@@ -435,6 +436,8 @@ namespace Paradijs.Models
 
 
         }
+
+        #endregion
 
         #endregion
     }

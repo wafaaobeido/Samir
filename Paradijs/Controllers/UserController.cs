@@ -13,7 +13,9 @@ namespace Paradijs.Controllers
 
     public class UserController : Controller
     {
-        // Registration Action 
+
+
+        /* Registration Action */ 
 
         [HttpGet]
         public ActionResult Registration()
@@ -40,6 +42,7 @@ namespace Paradijs.Controllers
                 if (IsExist)
                 {
                     ModelState.AddModelError("EmailExist", "Email Already exist");
+                    ModelState.Clear();
                     return View(user);
                 }
 
@@ -80,10 +83,11 @@ namespace Paradijs.Controllers
 
             ViewBag.Message = message;
             ViewBag.Status = Status;
+            ModelState.Clear();
             return View();
         }
 
-        // Verify Account
+        /* Verify Account */
 
         [NonAction]
         public void SendVerificationLinkEmail(string EmaiID, string ActivationCode)
@@ -147,7 +151,7 @@ namespace Paradijs.Controllers
             return View();
         }
 
-        //LogIn Action
+        /* LogIn Action */
 
         [HttpGet]
         public ActionResult Login()
@@ -157,14 +161,14 @@ namespace Paradijs.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(User user, string ReturnURL = "")
+        public ActionResult Login(User user)
         {
 
             DB _database = new DB();
             
             string message = "";
-            string username = _database.LogIn(user);
-            if (username != "" && Session["UserName"] == null)
+            string useremail = _database.LogIn(user);
+            if (useremail != "" && Session["Useremail"] == null)
             {
                 int timeout = user.RememberMe ? 525600 : 20; // 525600 min = 1 year
                 var ticket = new FormsAuthenticationTicket(user.Email, user.RememberMe, timeout);
@@ -173,16 +177,11 @@ namespace Paradijs.Controllers
                 cookie.Expires = DateTime.Now.AddMinutes(timeout);
                 cookie.HttpOnly = true;
                 Response.Cookies.Add(cookie);
-                Session["UserName"] = username;
+                Session["Useremail"] = useremail;
+                Session["User"] = user;
+                ModelState.Clear();
+                return RedirectToAction("ViewProducts", "Product");
 
-                if (Url.IsLocalUrl(ReturnURL))
-                {
-                    return Redirect(ReturnURL);
-                }
-                else
-                {
-                    return RedirectToAction("ViewProducts", "Product");
-                }
 
             }
             else
@@ -191,10 +190,11 @@ namespace Paradijs.Controllers
             }
 
             ViewBag.Message = message;
+            ModelState.Clear();
             return View();
         }
 
-        //Logout
+        /* Logout */
 
         [HttpPost]
         [Authorize]

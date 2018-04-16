@@ -22,7 +22,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "ViewProducts", "Product")</li>
-                    @if (Session["UserName"] == null)
+                    @if (Session["Useremail"] == null)
                     {
                         <li>@Html.ActionLink("Log in", "Login", "User")</li>
                     }
@@ -32,7 +32,7 @@
         </div>
     </div>
     <div class="container body-content"><br /><br />
-        @if (Session["UserName"] != null)
+        @if (Session["Useremail"] != null)
         {
         using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm" }))
         {
