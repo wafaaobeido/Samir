@@ -4,28 +4,32 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace Paradijs.Models
+namespace Paradijs.Core
 {
-    public class Review
+    public class Order
     {
         #region Properties
         public int Id { get; set; }
-        public User Buyer { get; set; }
-        public string Content { get; set; }
-        public DateTime PublishingTime { get; set; }
-        public Product Product { get; set; }
+        public User User { get; set; }
+        public DateTime Ordertime { get; set; }
+        public DateTime DeliveryTime { get; set; }
+        public List<Product> Products { get; set; }
+
+
         #endregion
 
         #region Constructers
-        public Review()
+        public Order()
         {
-
+            Ordertime = DateTime.Now;
         }
 
         #endregion
 
         #region Methodes
-     
+
+       
+
         #endregion
 
     }

@@ -1,0 +1,45 @@
+﻿@using Paradijs.Models
+@model List<Product>
+
+@{
+    ViewBag.Title = "ViewProductDetails";
+}
+
+@if (Session["Product"] == null)
+{
+    Response.Redirect("../Home/Index");
+}
+else
+{
+ 
+
+    foreach (var product in Model)
+    {
+        <h2>Details</h2>
+
+        <div>
+            <h4>Product</h4>
+            <hr />
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => product.Name)
+                </dt>
+
+                <dd>
+                    @product.Name
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => product.Ingredients)
+                </dt>
+
+                <dd>
+                    @product.Ingredients
+                </dd>
+            </dl>
+        </div>
+        }
+    }
+    <p>
+        @Html.ActionLink("Back to List", "Index")
+    </p>

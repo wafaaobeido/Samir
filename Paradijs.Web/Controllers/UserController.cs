@@ -1,8 +1,7 @@
-﻿using System;
+﻿using Paradijs.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Paradijs.Core;
-using Paradijs.Infrastructure;
 using System.Net;
 using System.Net.Mail;
 using System.Web;

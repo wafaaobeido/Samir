@@ -5,7 +5,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace Paradijs.Models
+namespace Paradijs.Core
 {
     public class User
     {

@@ -107,9 +107,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Paradijs\Paradijs.csproj">
+    <ProjectReference Include="..\Paradijs\Paradijs.Web.csproj">
       <Project>{B236BD5D-4756-46EB-A5EE-465747D72C51}</Project>
-      <Name>Paradijs</Name>
+      <Name>Paradijs.Web</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

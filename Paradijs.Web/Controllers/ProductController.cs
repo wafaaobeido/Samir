@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Paradijs.Models;
+using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Paradijs.Core;
-using Paradijs.Infrastructure;
 
 
 namespace Paradijs.Web.Controllers
