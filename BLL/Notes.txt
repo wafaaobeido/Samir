@@ -1,0 +1,2 @@
+﻿* Hier moet de logic zijn
+* Ik heb nog geen logic in mijn code dus die hoeft nog niet

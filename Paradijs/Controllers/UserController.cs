@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Paradijs.Core;
-using Paradijs.Infrastructure;
+using Models;
+using DAL;
 using System.Net;
 using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
-namespace Paradijs.Controllers
+namespace Samir.Controllers
 {
 
     public class UserController : Controller
@@ -30,14 +30,14 @@ namespace Paradijs.Controllers
         {
             bool Status = false;
             string message = "";
-            DB _database = new DB();
+            UserDB _database = new UserDB();
             User newuser = new User();
 
             // Model validation
             if (ModelState.IsValid)
             {
             
-                #region // Email is already Exist
+                // Email is already Exist
 
                 var IsExist = _database.IsEmailExists(user);
                 if (IsExist)
@@ -46,36 +46,22 @@ namespace Paradijs.Controllers
                     ModelState.Clear();
                     return View(user);
                 }
-
-                #endregion
-
-                #region // Generate Activation code
                 user.ActivationCode = Guid.NewGuid();
 
-                #endregion
-
-                #region  // Password Hashing
-
+                // Password Hashing
                 user.Password = Crypto.Hash(user.Password);
                 user.ConfirmPassword = Crypto.Hash(user.ConfirmPassword);
-
-                #endregion
                 user.IsEmailVerified = false;
-                #region // Save data to Database
 
+                // Save data to Database
                 newuser = _database.AddUser(user);
                 Session["User"] = newuser;
 
-                #endregion
-
-                #region // Send Email to User
+                // Send Email to User
                 SendVerificationLinkEmail(user.Email, user.ActivationCode.ToString());
                 message = "Registration successfully done. Account activation link" + 
                     " has been sent to your Email:" + user.Email;
-
                 Status = true;
-                #endregion
-
             }
             else
             {
@@ -88,14 +74,13 @@ namespace Paradijs.Controllers
             return View();
         }
 
-        /* Verify Account */
 
+        /* Verify Account */
         [NonAction]
         public void SendVerificationLinkEmail(string EmaiID, string ActivationCode)
         {
             var verifyUrl = "/user/VerifyAccount/" + ActivationCode;
             var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
-
             var FromEmail = new MailAddress("samirobeido76@gmail.com", "Samir Obeido");
             var ToEmail = new MailAddress(EmaiID);
             var FromEmailPass = "sawsan@1968";
@@ -104,8 +89,6 @@ namespace Paradijs.Controllers
             string Content = "</br></br>We are excited to tell you that your account is" +
                 "successfully created. Please click on the below link to verify your account" +
                 "</br></br><a href='" + link + "'>" + link + "</a>";
-
-
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
@@ -116,7 +99,6 @@ namespace Paradijs.Controllers
                 Credentials = new NetworkCredential(FromEmail.Address, FromEmailPass)
 
             };
-
             using (var message = new MailMessage(FromEmail, ToEmail)
             {
                 Subject = subject,
@@ -133,7 +115,7 @@ namespace Paradijs.Controllers
         public ActionResult VerifyAccount(string id)
         {
             User user = new User();
-            DB _database = new DB();
+            UserDB _database = new UserDB();
             bool Status = false;
             user.ActivationCode = new Guid(id);
             var IsExist = _database.IsActivationCodeExists(user);
@@ -153,7 +135,6 @@ namespace Paradijs.Controllers
         }
 
         /* LogIn Action */
-
         [HttpGet]
         public ActionResult Login()
         {
@@ -165,8 +146,7 @@ namespace Paradijs.Controllers
         public ActionResult Login(User user)
         {
 
-            DB _database = new DB();
-            
+            UserDB _database = new UserDB();
             string message = "";
             string useremail = _database.LogIn(user);
             if (useremail != "" && Session["Useremail"] == null)
@@ -182,8 +162,6 @@ namespace Paradijs.Controllers
                 Session["User"] = user;
                 ModelState.Clear();
                 return RedirectToAction("ViewProducts", "Product");
-
-
             }
             else
             {
@@ -196,7 +174,6 @@ namespace Paradijs.Controllers
         }
 
         /* Logout */
-
         [HttpPost]
         [Authorize]
         public ActionResult Logout()

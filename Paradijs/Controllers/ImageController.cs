@@ -1,11 +1,11 @@
 ﻿using System;
 using System.IO;
-using Paradijs.Core;
+using Models;
+using DAL;
 using System.Web.Mvc;
-using Paradijs.Models;
 
 
-namespace Paradijs.Web.Controllers
+namespace Samir.Web.Controllers
 {
     public class ImageController : Controller
     {
@@ -28,8 +28,8 @@ namespace Paradijs.Web.Controllers
             filename = Path.Combine(Server.MapPath("~/Images/"), filename);
             image.ImageFile.SaveAs(filename);
 
-            //Image newimage = new Image();
-            DB db = new DB();
+            ImageBD db = new ImageBD();
+            
 
             image = db.AddImage(image);
             Session["Image"] = image;

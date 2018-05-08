@@ -7,7 +7,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Data.Entity;
 
-namespace Paradijs
+namespace Samir.Web
 {
     public class MvcApplication : System.Web.HttpApplication
     {

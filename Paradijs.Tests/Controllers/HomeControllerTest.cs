@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Paradijs;
-using Paradijs.Controllers;
+using Samir;
+using Samir.Controllers;
 
-namespace Paradijs.Tests.Controllers
+namespace Samir.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTest

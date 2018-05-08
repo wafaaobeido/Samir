@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Paradijs.Infrastructure
+namespace DAL
 {
-    public class Class1
+    interface IReview
     {
-        //Hier moet de operations van de database zijn.
     }
 }

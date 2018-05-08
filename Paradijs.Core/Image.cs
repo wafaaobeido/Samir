@@ -4,13 +4,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace Paradijs.Core
+namespace Models
 {
     public class Image
     {
         public int Id { get; set; }
-        [Display(Name = "Image tilte")]
-        public int ImageTitle { get; set; }
+        public int ProductID { get; set; }
         [Display(Name = "Upload Photo")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Beeld moet upgeload worden!")]
         public string ImagePath { get; set; }

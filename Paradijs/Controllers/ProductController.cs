@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using Paradijs.Core;
-using Paradijs.Infrastructure;
+using Models;
+using DAL;
 
 
-namespace Paradijs.Web.Controllers
+namespace Samir.Web.Controllers
 {
     public class ProductController : Controller
     {
@@ -25,7 +25,7 @@ namespace Paradijs.Web.Controllers
         {
 
             Product NewProduct = new Product();
-            DB db = new DB();
+            ProductDB db = new ProductDB();
             NewProduct = db.AddProduct(product);
             Session["Product"] = NewProduct;
             return View(product);
@@ -35,7 +35,7 @@ namespace Paradijs.Web.Controllers
         public ActionResult ViewProducts()
         {
             List<Product> model = new List<Product>();
-            DB db = new DB();
+            ProductDB db = new ProductDB();
             model = db.ViewProducts();
             Session["Product"] = model;
             return View(model);
@@ -44,7 +44,7 @@ namespace Paradijs.Web.Controllers
         public ActionResult ViewProductDetails(int id)
         {
             List<Product> model = new List<Product>();
-            DB db = new DB();
+            ProductDB db = new ProductDB();
             model = db.ViewProductDetails(id);
             Session["Product"] = model;
             return View(model);

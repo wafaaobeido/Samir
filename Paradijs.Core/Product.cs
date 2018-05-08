@@ -1,20 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace Paradijs.Core
+namespace Models
 {
     public class Product
     {
         #region properties
         public int Id { get; set; }
+        [Display(Name= "Name")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "De naam van de gerecht moet nog ingevoerd worden.")]
         public string Name { get; set; }
+        [Display(Name = "Ingredients")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "De Ingredients moet nog ingevoerd worden.")]
         public string Ingredients { get; set; }
-        public int Price { get; set; }
-
+        [Display(Name = "Price")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "De Price moet nog ingevoerd worden.")]
+        public decimal Price { get; set; }
+        [Display(Name = "Reviews")]
         public List<Review> Reviews { get; set; }
+        [Display(Name = "Orders")]
         public List<Order> Orders { get; set; }
 
         #endregion

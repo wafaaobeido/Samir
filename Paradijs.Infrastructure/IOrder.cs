@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Paradijs.Core
+namespace DAL
 {
-    public class Class1
+    interface IOrder
     {
-        // Hier moet de classen van de database en de interfaces die erbij hoort zijn.
+
     }
 }

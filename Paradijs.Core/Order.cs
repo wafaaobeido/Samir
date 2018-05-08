@@ -4,7 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 
-namespace Paradijs.Core
+namespace Models
 {
     public class Order
     {

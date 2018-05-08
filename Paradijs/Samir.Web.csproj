@@ -13,8 +13,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Paradijs.Web</RootNamespace>
-    <AssemblyName>Paradijs.Web</AssemblyName>
+    <RootNamespace>Samir.Web</RootNamespace>
+    <AssemblyName>Samir.Web</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -162,6 +162,14 @@
     <Content Include="App_Data\Paradij_DB_log.ldf">
       <DependentUpon>Paradij_DB.mdf</DependentUpon>
     </Content>
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\css\bootstrap-theme.css" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\css\bootstrap-theme.min.css" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\css\bootstrap.css" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\css\bootstrap.min.css" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\js\bootstrap.js" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\js\bootstrap.min.js" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\js\npm.js" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
@@ -173,6 +181,14 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\css\bootstrap-theme.css.map" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\css\bootstrap-theme.min.css.map" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\css\bootstrap.css.map" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\css\bootstrap.min.css.map" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="bootstrap\bootstrap-3.3.7-dist\fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -210,7 +226,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
-    <Folder Include="Models\" />
+    <Folder Include="ViewModels\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -226,13 +242,13 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Paradijs.Core\Paradijs.Core.csproj">
+    <ProjectReference Include="..\Paradijs.Core\Models.csproj">
       <Project>{9a3a6f56-f283-4c15-8057-f3f201bae145}</Project>
-      <Name>Paradijs.Core</Name>
+      <Name>Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Paradijs.Infrastructure\Paradijs.Infrastructure.csproj">
+    <ProjectReference Include="..\Paradijs.Infrastructure\DAL.csproj">
       <Project>{72032e61-bc3c-4fe4-b63e-deaa3d3d8722}</Project>
-      <Name>Paradijs.Infrastructure</Name>
+      <Name>DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

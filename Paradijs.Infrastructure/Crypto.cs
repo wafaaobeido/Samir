@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Web;
 
-namespace Paradijs.Infrastructure
+namespace DAL
 {
     public static class Crypto
     {
