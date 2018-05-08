@@ -23,12 +23,23 @@ namespace Samir.Web.Controllers
         [HttpPost]
         public ActionResult AddProduct(Product product)
         {
-
-            Product NewProduct = new Product();
             ProductDB db = new ProductDB();
-            NewProduct = db.AddProduct(product);
-            Session["Product"] = NewProduct;
-            return View(product);
+            if (Session["User"] != null)
+            {
+                Product NewProduct = new Product();
+
+
+                NewProduct = db.AddProduct(product);
+                if (NewProduct.Id != 0)
+                {
+                    Session["Product"] = NewProduct;
+                    return RedirectToAction("AddImage", "Image", new { es = NewProduct });
+                }
+                return View(product);
+
+            }
+            return RedirectToAction("Login", "User");
+
         }
 
 

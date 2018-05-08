@@ -188,7 +188,7 @@ namespace DAL
         }
 
 
-        // Bijwerken users.....
+        // Bijwerken .....
 
         public void DeleteUser()
         {

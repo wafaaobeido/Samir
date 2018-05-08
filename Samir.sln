@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Paradijs.Core\Mod
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DAL", "Paradijs.Infrastructure\DAL.csproj", "{72032E61-BC3C-4FE4-B63E-DEAA3D3D8722}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLL", "BLL\BLL.csproj", "{FE1BCB9E-FBF2-4489-A2E0-7ED8BCC15EF7}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,10 +33,6 @@ Global
 		{72032E61-BC3C-4FE4-B63E-DEAA3D3D8722}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72032E61-BC3C-4FE4-B63E-DEAA3D3D8722}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72032E61-BC3C-4FE4-B63E-DEAA3D3D8722}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FE1BCB9E-FBF2-4489-A2E0-7ED8BCC15EF7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FE1BCB9E-FBF2-4489-A2E0-7ED8BCC15EF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FE1BCB9E-FBF2-4489-A2E0-7ED8BCC15EF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FE1BCB9E-FBF2-4489-A2E0-7ED8BCC15EF7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

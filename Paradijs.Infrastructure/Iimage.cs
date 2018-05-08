@@ -10,5 +10,6 @@ namespace DAL
     interface IImage
     {
         Image AddImage(Image image);
+        List<string> GetImageForProduct(int id);
     }
 }

@@ -20,6 +20,9 @@ namespace Models
         [Display(Name = "Price")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "De Price moet nog ingevoerd worden.")]
         public decimal Price { get; set; }
+        [Display(Name = "Photo")]
+        [Required(AllowEmptyStrings = false, ErrorMessage = "Kies tenminste ��n afbeelding")]
+        public List<string> Picture { get; set; }
         [Display(Name = "Reviews")]
         public List<Review> Reviews { get; set; }
         [Display(Name = "Orders")]

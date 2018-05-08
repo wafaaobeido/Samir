@@ -39,5 +39,6 @@ namespace Samir.Web.Controllers
 
             // when i add a image the product will not in de database is.
         }
+
     }
 }

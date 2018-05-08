@@ -22,13 +22,12 @@ namespace DAL
 
         #region methodes
 
-        #region Product
 
         public List<Product> ViewProducts()
         {
 
             String query = "SELECT Id, Name, Price FROM Product";
-
+            ImageBD imageBD = new ImageBD();
 
             var model = new List<Product>();
             using (SqlConnection con = new SqlConnection(connectionstring()))
@@ -42,6 +41,7 @@ namespace DAL
                     product.Id = Convert.ToInt32(rdr["Id"]);
                     product.Name = (string)rdr["Name"];
                     product.Price = Convert.ToInt32(rdr["Price"]);
+                    product.Picture = imageBD.GetImageForProduct(Convert.ToInt32(rdr["Id"]));
 
                     model.Add(product);
                 }
@@ -54,8 +54,9 @@ namespace DAL
 
         public List<Product> ViewProductDetails(int id)
         {
+            ImageBD imageBD = new ImageBD();
 
-            String sql = "SELECT  Name, Ingredients FROM Product Where Id = @id";
+            String sql = "SELECT Id, Name, Ingredients FROM Product Where Id = @id";
 
 
             var model = new List<Product>();
@@ -68,9 +69,10 @@ namespace DAL
                 while (rdr.Read())
                 {
                     var product = new Product();
-
+                    product.Id = Convert.ToInt32(rdr["Id"]);
                     product.Name = (string)rdr["Name"];
                     product.Ingredients = (string)rdr["Ingredients"];
+                    product.Picture = imageBD.GetImageForProduct(Convert.ToInt32(rdr["Id"]));
 
                     model.Add(product);
                 }
@@ -87,7 +89,7 @@ namespace DAL
 
             SqlConnection con = new SqlConnection(connectionstring());
             con.Open();
-            string query = "INSERT INTO Product(Name, Ingredients, Price) Values ( @Name, @Ingredients, @Price )";
+            string query = "INSERT INTO Product(Name, Ingredients, Price) Values ( @Name, @Ingredients, @Price ); SELECT SCOPE_IDENTITY()";
             SqlCommand addproduct = new SqlCommand(query, con);
             addproduct.Parameters.AddWithValue("@Name", product.Name);
             addproduct.Parameters.AddWithValue("@Ingredients", product.Ingredients);
@@ -100,6 +102,9 @@ namespace DAL
             return newproduct;
 
         }
+
+        //Bijwerken ......
+
         public void DeleteProduct(Product product)
         {
             SqlConnection con = new SqlConnection(connectionstring());
@@ -121,8 +126,8 @@ namespace DAL
             cmd.ExecuteNonQuery();
             con.Close();
         }
-        #endregion
 
         #endregion
+
     }
 }

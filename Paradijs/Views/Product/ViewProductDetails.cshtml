@@ -11,7 +11,7 @@
 }
 else
 {
- 
+
 
     foreach (var product in Model)
     {
@@ -21,6 +21,12 @@ else
             <h4>Product</h4>
             <hr />
             <dl class="dl-horizontal">
+                <dd>
+                    @for (int i = 0; i < product.Picture.Count; i++)
+                    {
+                        <img src="@Url.Content(product.Picture[i])" alt="Foto van dit object" />
+                    }
+                </dd>
                 <dt>
                     @Html.DisplayNameFor(model => product.Name)
                 </dt>
@@ -38,8 +44,8 @@ else
                 </dd>
             </dl>
         </div>
-        }
     }
-    <p>
-        @Html.ActionLink("Back to List", "Index")
-    </p>
+}
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
