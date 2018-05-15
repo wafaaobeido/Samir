@@ -9,11 +9,14 @@ namespace Samir.Web.Controllers
 {
     public class ImageController : Controller
     {
+       // private IImage db = new ImageSQLContext();
+        private ImageRepository repo = new ImageRepository(new ImageSQLContext());
+
         // GET: Image
         [HttpGet]
         public ActionResult AddImage()
         {
-
+            
             return View();
         }
 
@@ -27,11 +30,9 @@ namespace Samir.Web.Controllers
             image.ImagePath = "~/Images/" + filename;
             filename = Path.Combine(Server.MapPath("~/Images/"), filename);
             image.ImageFile.SaveAs(filename);
-
-            ImageBD db = new ImageBD();
             
 
-            image = db.AddImage(image);
+            image = repo.AddImage(image);
             Session["Image"] = image;
 
             ModelState.Clear();

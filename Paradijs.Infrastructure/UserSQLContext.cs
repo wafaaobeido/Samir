@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class UserDB : IUser
+    public class UserSQLContext : IUser
     {
         #region Fields
 
@@ -123,7 +123,7 @@ namespace DAL
 
         }
 
-        public void IsValidation(User user)
+        public bool IsValidation(User user)
         {
             SqlConnection con = new SqlConnection(connectionstring());
 
@@ -145,7 +145,8 @@ namespace DAL
                     }
                 };
 
-                isvalidate.ExecuteNonQuery();
+                bool check = Convert.ToBoolean(isvalidate.ExecuteNonQuery());
+                return check = true;
             }
             finally
             {
@@ -154,14 +155,13 @@ namespace DAL
         }
 
         // LogIn
-        public string LogIn(User user)
+        public User LogIn(User user)
         {
             SqlConnection con = new SqlConnection(connectionstring());
             User newuser = new User();
             try
             {
                 con.Open();
-
                 //string query = "SELECT FirstName FROM [User] Where EmailID = @EmailID AND Password = @Password";
                 SqlCommand Logincmd = new SqlCommand
                 {
@@ -172,11 +172,21 @@ namespace DAL
                     {
                         new SqlParameter("@EmailID", user.Email),
                         new SqlParameter("@Password", Crypto.Hash(user.Password))
+                       
                     }
                 };
+                var model = new List<User>();
+                SqlDataReader rdr = Logincmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    var user1 = new User();
+                    user1.Email = (string)rdr["EmailID"];
+                    user1.IsEmailVerified = (bool)rdr["IsEmailVerified"];
 
-                var emai = Logincmd.ExecuteScalar().ToString();
-                return emai;
+                    user = user1;
+                }
+                //newuser = user;
+                return user;
 
 
             }

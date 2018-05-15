@@ -14,8 +14,8 @@ namespace Samir.Controllers
 
     public class UserController : Controller
     {
-
-
+        //private IUser _database = new UserSQLContext();
+        private UserRepository repo = new UserRepository(new UserSQLContext());
         /* Registration Action */ 
 
         [HttpGet]
@@ -30,7 +30,6 @@ namespace Samir.Controllers
         {
             bool Status = false;
             string message = "";
-            UserDB _database = new UserDB();
             User newuser = new User();
 
             // Model validation
@@ -38,8 +37,7 @@ namespace Samir.Controllers
             {
             
                 // Email is already Exist
-
-                var IsExist = _database.IsEmailExists(user);
+                var IsExist = repo.CheckEmail(user);
                 if (IsExist)
                 {
                     ModelState.AddModelError("EmailExist", "Email Already exist");
@@ -54,7 +52,7 @@ namespace Samir.Controllers
                 user.IsEmailVerified = false;
 
                 // Save data to Database
-                newuser = _database.AddUser(user);
+                newuser = repo.AddUser(user);
                 Session["User"] = newuser;
 
                 // Send Email to User
@@ -115,14 +113,14 @@ namespace Samir.Controllers
         public ActionResult VerifyAccount(string id)
         {
             User user = new User();
-            UserDB _database = new UserDB();
+            
             bool Status = false;
             user.ActivationCode = new Guid(id);
-            var IsExist = _database.IsActivationCodeExists(user);
+            var IsExist = repo.CheckActivationCode(user);
             if (IsExist)
             {
                 user.IsEmailVerified = true;
-                _database.IsValidation(user);
+                repo.IsValidation(user);
                 Status = true;
             }
             else
@@ -145,32 +143,36 @@ namespace Samir.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(User user)
         {
+            
 
-            UserDB _database = new UserDB();
             string message = "";
-            string useremail = _database.LogIn(user);
-            if (useremail != "" && Session["Useremail"] == null)
+            user = repo.LogIn(user);
+            if (user.IsEmailVerified == true)
             {
-                int timeout = user.RememberMe ? 525600 : 20; // 525600 min = 1 year
-                var ticket = new FormsAuthenticationTicket(user.Email, user.RememberMe, timeout);
-                string Encrypted = FormsAuthentication.Encrypt(ticket);
-                var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, Encrypted);
-                cookie.Expires = DateTime.Now.AddMinutes(timeout);
-                cookie.HttpOnly = true;
-                Response.Cookies.Add(cookie);
-                Session["Useremail"] = useremail;
-                Session["User"] = user;
-                ModelState.Clear();
-                return RedirectToAction("ViewProducts", "Product");
-            }
-            else
-            {
-                message = "Invalid Credential provider";
-            }
+                if (user.Email != "" && Session["Useremail"] == null)
+                {
+                    int timeout = user.RememberMe ? 525600 : 20; // 525600 min = 1 year
+                    var ticket = new FormsAuthenticationTicket(user.Email, user.RememberMe, timeout);
+                    string Encrypted = FormsAuthentication.Encrypt(ticket);
+                    var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, Encrypted);
+                    cookie.Expires = DateTime.Now.AddMinutes(timeout);
+                    cookie.HttpOnly = true;
+                    Response.Cookies.Add(cookie);
+                    Session["Useremail"] = user.Email;
+                    Session["User"] = user;
+                    ModelState.Clear();
+                    return RedirectToAction("ViewProducts", "Product");
+                }
+                else
+                {
+                    message = "Invalid Credential provider";
+                }
 
-            ViewBag.Message = message;
-            ModelState.Clear();
-            return View();
+                ViewBag.Message = message;
+                ModelState.Clear();
+                return View();
+            }
+            return RedirectToAction("Login");
         }
 
         /* Logout */
@@ -179,7 +181,7 @@ namespace Samir.Controllers
         public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
-            Session["UserName"] = null;
+            Session["Useremail"] = null;
             return RedirectToAction("ViewProducts", "Product");
         }
     }

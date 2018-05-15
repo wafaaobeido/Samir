@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    interface IProduct
+    public interface IProduct
     {
         List<Product> ViewProducts();
         List<Product> ViewProductDetails(int id);

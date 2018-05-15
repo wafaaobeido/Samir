@@ -9,8 +9,17 @@ using DAL;
 
 namespace Samir.Web.Controllers
 {
+    /*Repository Pattern */
+    //// Generic repository //// kan gebruikt worden om de coden te verkorten ==> Maak een generic repository voor de code die zelfde is in de database klasses
+    //// Using repository can help insulate the app from changes in the data store ////
+
+
+
     public class ProductController : Controller
     {
+        // private IProduct db = new ProductSQLContext();
+        private ProductRepository repo = new ProductRepository(new ProductSQLContext());
+
         // GET: Product
         [HttpGet]
         public ActionResult AddProduct()
@@ -23,13 +32,12 @@ namespace Samir.Web.Controllers
         [HttpPost]
         public ActionResult AddProduct(Product product)
         {
-            ProductDB db = new ProductDB();
+           
             if (Session["User"] != null)
             {
                 Product NewProduct = new Product();
 
-
-                NewProduct = db.AddProduct(product);
+                NewProduct = repo.AddProduct(product);
                 if (NewProduct.Id != 0)
                 {
                     Session["Product"] = NewProduct;
@@ -46,8 +54,8 @@ namespace Samir.Web.Controllers
         public ActionResult ViewProducts()
         {
             List<Product> model = new List<Product>();
-            ProductDB db = new ProductDB();
-            model = db.ViewProducts();
+           
+            model = repo.GetAllproduct();
             Session["Product"] = model;
             return View(model);
 
@@ -55,8 +63,8 @@ namespace Samir.Web.Controllers
         public ActionResult ViewProductDetails(int id)
         {
             List<Product> model = new List<Product>();
-            ProductDB db = new ProductDB();
-            model = db.ViewProductDetails(id);
+           
+            model = repo.GetProductDetails(id);
             Session["Product"] = model;
             return View(model);
 

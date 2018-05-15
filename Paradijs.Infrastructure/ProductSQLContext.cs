@@ -1,6 +1,7 @@
 ﻿using Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class ProductDB : IProduct
+    public class ProductSQLContext : IProduct
     {
         #region Fields
 
@@ -27,7 +28,7 @@ namespace DAL
         {
 
             String query = "SELECT Id, Name, Price FROM Product";
-            ImageBD imageBD = new ImageBD();
+            ImageSQLContext imageBD = new ImageSQLContext();
 
             var model = new List<Product>();
             using (SqlConnection con = new SqlConnection(connectionstring()))
@@ -54,7 +55,7 @@ namespace DAL
 
         public List<Product> ViewProductDetails(int id)
         {
-            ImageBD imageBD = new ImageBD();
+            ImageSQLContext imageBD = new ImageSQLContext();
 
             String sql = "SELECT Id, Name, Ingredients FROM Product Where Id = @id";
 
@@ -90,11 +91,18 @@ namespace DAL
             SqlConnection con = new SqlConnection(connectionstring());
             con.Open();
             string query = "INSERT INTO Product(Name, Ingredients, Price) Values ( @Name, @Ingredients, @Price ); SELECT SCOPE_IDENTITY()";
-            SqlCommand addproduct = new SqlCommand(query, con);
-            addproduct.Parameters.AddWithValue("@Name", product.Name);
-            addproduct.Parameters.AddWithValue("@Ingredients", product.Ingredients);
-            addproduct.Parameters.AddWithValue("@Price", product.Price);
-
+            SqlCommand addproduct = new SqlCommand
+            {
+                Connection = con,
+                CommandType = CommandType.Text,
+                CommandText = query,
+                Parameters =
+                {
+                    new SqlParameter( "@Name", product.Name),
+                    new SqlParameter("@Ingredients", product.Ingredients),
+                    new SqlParameter("@Price", product.Price)
+                }
+            };
 
             int x = Convert.ToInt32(addproduct.ExecuteScalar());
             newproduct.Id = x;
@@ -118,11 +126,20 @@ namespace DAL
         {
             SqlConnection con = new SqlConnection(connectionstring());
             con.Open(); string query = "Update Product Set (Name = @Name, Ingredients = @Ingredients, Price =  @Price )Where Id = @Id";
-            SqlCommand cmd = new SqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@Id", product.Id);
-            cmd.Parameters.AddWithValue("@Name", product.Name);
-            cmd.Parameters.AddWithValue("@Ingredients", product.Ingredients);
-            cmd.Parameters.AddWithValue("@Price", product.Price);
+            SqlCommand cmd = new SqlCommand
+            {
+                Connection = con,
+                CommandType = CommandType.Text,
+                CommandText = query,
+                Parameters =
+                {
+                    new SqlParameter( "@Id", product.Id),
+                    new SqlParameter( "@Name", product.Name),
+                    new SqlParameter("@Ingredients", product.Ingredients),
+                    new SqlParameter("@Price", product.Price)
+                }
+            };
+
             cmd.ExecuteNonQuery();
             con.Close();
         }

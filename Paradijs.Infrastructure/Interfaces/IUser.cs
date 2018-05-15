@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    interface IUser
+    public interface IUser
     {
         bool IsEmailExists(User user);
         User AddUser(User user);
         bool IsActivationCodeExists(User user);
-        void IsValidation(User user);
-        string LogIn(User user);
+        bool IsValidation(User user);
+        User LogIn(User user);
         void DeleteUser();
         void EditUser();
     }

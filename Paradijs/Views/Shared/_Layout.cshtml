@@ -34,10 +34,10 @@
     <div class="container body-content"><br /><br />
         @if (Session["Useremail"] != null)
         {
-        using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm" }))
-        {
+            using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm" }))
+            {
         <a href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
-        }
+            }
         }
 
         @RenderBody()

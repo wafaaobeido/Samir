@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    interface IImage
+    public interface IImage
     {
         Image AddImage(Image image);
         List<string> GetImageForProduct(int id);

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DAL
 {
-    public class ImageBD : IImage
+    public class ImageSQLContext : IImage
     {
         #region Fields
 
