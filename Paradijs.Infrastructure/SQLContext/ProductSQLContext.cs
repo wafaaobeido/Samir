@@ -1,6 +1,7 @@
 ﻿using Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -18,6 +19,7 @@ namespace DAL
             string _connectionstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\388227\Desktop\Paradijs\Paradijs\App_Data\Paradij_DB.mdf;Integrated Security=True";
             return _connectionstring;
         }
+        public static string X = ConfigurationManager.ConnectionStrings["LOCALDATABASE"].ConnectionString;
 
         #endregion
 
@@ -27,39 +29,27 @@ namespace DAL
         public List<Product> ViewProducts()
         {
 
-            String query = "SELECT Id, Name, Price FROM Product";
-            ImageSQLContext imageBD = new ImageSQLContext();
-
+            String query = "SELECT * FROM Product";
             var model = new List<Product>();
-            using (SqlConnection con = new SqlConnection(connectionstring()))
+            var ImageContext = new ImageSQLContext();
+            using (SqlConnection con = new SqlConnection(X))
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand(query, con);
-                SqlDataReader rdr = cmd.ExecuteReader();
-                while (rdr.Read())
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
                 {
-                    var product = new Product();
-                    product.Id = Convert.ToInt32(rdr["Id"]);
-                    product.Name = (string)rdr["Name"];
-                    product.Price = Convert.ToInt32(rdr["Price"]);
-                    product.Picture = imageBD.GetImageForProduct(Convert.ToInt32(rdr["Id"]));
-
-                    model.Add(product);
+                   
+                    model.Add(Utils.ProductFromReader(reader));
                 }
-
-
-
             }
             return model;
         }
 
         public List<Product> ViewProductDetails(int id)
         {
-            ImageSQLContext imageBD = new ImageSQLContext();
 
             String sql = "SELECT Id, Name, Ingredients FROM Product Where Id = @id";
-
-
             var model = new List<Product>();
             using (SqlConnection conn = new SqlConnection(connectionstring()))
             {
@@ -69,24 +59,16 @@ namespace DAL
                 SqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
-                    var product = new Product();
-                    product.Id = Convert.ToInt32(rdr["Id"]);
-                    product.Name = (string)rdr["Name"];
-                    product.Ingredients = (string)rdr["Ingredients"];
-                    product.Picture = imageBD.GetImageForProduct(Convert.ToInt32(rdr["Id"]));
-
-                    model.Add(product);
+                    model.Add(Utils.ProductFromReader(rdr));
                 }
-
             }
-
             return model;
 
         }
 
         public Product AddProduct(Product product)
         {
-            Product newproduct = product;
+            Product newproduct = new Product();
 
             SqlConnection con = new SqlConnection(connectionstring());
             con.Open();
@@ -103,9 +85,12 @@ namespace DAL
                     new SqlParameter("@Price", product.Price)
                 }
             };
+            newproduct = product;
 
+            //Merge those two lines//
             int x = Convert.ToInt32(addproduct.ExecuteScalar());
             newproduct.Id = x;
+
             con.Close();
             return newproduct;
 
@@ -122,6 +107,7 @@ namespace DAL
             cmd.ExecuteNonQuery();
             con.Close();
         }
+
         public void EditProduct(Product product)
         {
             SqlConnection con = new SqlConnection(connectionstring());

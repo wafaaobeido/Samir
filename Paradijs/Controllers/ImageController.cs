@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using Models;
-using DAL;
+using BLL;
 using System.Web.Mvc;
 
 
@@ -9,8 +9,7 @@ namespace Samir.Web.Controllers
 {
     public class ImageController : Controller
     {
-       // private IImage db = new ImageSQLContext();
-        private ImageRepository repo = new ImageRepository(new ImageSQLContext());
+        private ImageLogic iLogic;
 
         // GET: Image
         [HttpGet]
@@ -32,13 +31,12 @@ namespace Samir.Web.Controllers
             image.ImageFile.SaveAs(filename);
             
 
-            image = repo.AddImage(image);
+            image = iLogic.AddImage(image);
             Session["Image"] = image;
 
             ModelState.Clear();
             return View(image);
 
-            // when i add a image the product will not in de database is.
         }
 
     }

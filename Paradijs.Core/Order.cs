@@ -26,11 +26,7 @@ namespace Models
 
         #endregion
 
-        #region Methodes
-
        
-
-        #endregion
 
     }
 }

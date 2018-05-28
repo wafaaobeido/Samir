@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Models;
-using DAL;
+using BLL;
 
 
 namespace Samir.Web.Controllers
@@ -17,8 +17,7 @@ namespace Samir.Web.Controllers
 
     public class ProductController : Controller
     {
-        // private IProduct db = new ProductSQLContext();
-        private ProductRepository repo = new ProductRepository(new ProductSQLContext());
+        private ProductLogic pLogic = new ProductLogic();
 
         // GET: Product
         [HttpGet]
@@ -32,12 +31,12 @@ namespace Samir.Web.Controllers
         [HttpPost]
         public ActionResult AddProduct(Product product)
         {
-           
+
             if (Session["User"] != null)
             {
                 Product NewProduct = new Product();
 
-                NewProduct = repo.AddProduct(product);
+                NewProduct = pLogic.AddProduct(product);
                 if (NewProduct.Id != 0)
                 {
                     Session["Product"] = NewProduct;
@@ -54,8 +53,8 @@ namespace Samir.Web.Controllers
         public ActionResult ViewProducts()
         {
             List<Product> model = new List<Product>();
-           
-            model = repo.GetAllproduct();
+
+            model = pLogic.GetAllproduct();
             Session["Product"] = model;
             return View(model);
 
@@ -63,8 +62,8 @@ namespace Samir.Web.Controllers
         public ActionResult ViewProductDetails(int id)
         {
             List<Product> model = new List<Product>();
-           
-            model = repo.GetProductDetails(id);
+
+            model = pLogic.GetProductDetails(id);
             Session["Product"] = model;
             return View(model);
 

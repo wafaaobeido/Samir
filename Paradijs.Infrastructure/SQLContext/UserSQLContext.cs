@@ -1,6 +1,7 @@
 ﻿using Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace DAL
             string _connectionstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\388227\Desktop\Paradijs\Paradijs\App_Data\Paradij_DB.mdf;Integrated Security=True";
             return _connectionstring;
         }
+
+        private static object X = ConfigurationManager.ConnectionStrings;
 
         #endregion
 
@@ -69,7 +72,7 @@ namespace DAL
                 CommandType = CommandType.Text,
                 CommandText = query,
                 Parameters = {
-                    new SqlParameter("@FirstName", user.FirstName),
+            new SqlParameter("@FirstName", user.FirstName),
             new SqlParameter("@LastName", user.LastName),
             new SqlParameter("@DateOfBirth", user.DateOfBirth),
             new SqlParameter("@Adress", user.Adress),
@@ -158,11 +161,9 @@ namespace DAL
         public User LogIn(User user)
         {
             SqlConnection con = new SqlConnection(connectionstring());
-            User newuser = new User();
             try
             {
                 con.Open();
-                //string query = "SELECT FirstName FROM [User] Where EmailID = @EmailID AND Password = @Password";
                 SqlCommand Logincmd = new SqlCommand
                 {
                     Connection = con,
@@ -171,7 +172,7 @@ namespace DAL
                     Parameters =
                     {
                         new SqlParameter("@EmailID", user.Email),
-                        new SqlParameter("@Password", Crypto.Hash(user.Password))
+                        new SqlParameter("@Password", Utils.Hash(user.Password))
                        
                     }
                 };
@@ -179,16 +180,9 @@ namespace DAL
                 SqlDataReader rdr = Logincmd.ExecuteReader();
                 while (rdr.Read())
                 {
-                    var user1 = new User();
-                    user1.Email = (string)rdr["EmailID"];
-                    user1.IsEmailVerified = (bool)rdr["IsEmailVerified"];
-
-                    user = user1;
+                    user = Utils.UserFromReader(rdr);
                 }
-                //newuser = user;
                 return user;
-
-
             }
             finally
             {

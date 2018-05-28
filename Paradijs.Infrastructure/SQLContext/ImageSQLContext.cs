@@ -27,10 +27,8 @@ namespace DAL
         {
             Image newimage = image;
             SqlConnection con = new SqlConnection(connectionstring());
-
             try
             {
-
                 con.Open();
                 string query = "INSERT INTO Image(ImagePath, ProductID)" +
                                           "Values ( @ImagePath, @ProductID)";
@@ -46,10 +44,9 @@ namespace DAL
                 }
                 };
 
-
                 int id = Convert.ToInt32(addimage.ExecuteScalar());
                 image.Id = id;
-               
+
                 return newimage;
             }
             finally
@@ -60,7 +57,7 @@ namespace DAL
 
         }
 
-     
+
 
         public List<string> GetImageForProduct(int id)
         {

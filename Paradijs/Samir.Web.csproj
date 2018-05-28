@@ -242,13 +242,13 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BLL\BLL.csproj">
+      <Project>{fe1bcb9e-fbf2-4489-a2e0-7ed8bcc15ef7}</Project>
+      <Name>BLL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Paradijs.Core\Models.csproj">
       <Project>{9a3a6f56-f283-4c15-8057-f3f201bae145}</Project>
       <Name>Models</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Paradijs.Infrastructure\DAL.csproj">
-      <Project>{72032e61-bc3c-4fe4-b63e-deaa3d3d8722}</Project>
-      <Name>DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
