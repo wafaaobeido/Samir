@@ -10,6 +10,7 @@ namespace DAL
     public class UserRepository
     {
         private IUser context;
+
         public UserRepository(IUser context)
         {
             this.context = context;
@@ -34,6 +35,31 @@ namespace DAL
         {
 
             return context.IsValidation(user);
+        }
+        public List<User> AllUsers()
+        {
+            return context.AllUsers();
+        }
+        public void DeleteUser(int id)
+        {
+             context.DeleteUser(id);
+        }
+        public void SendMessage(Message Message)
+        {
+            context.SendMessage(Message);
+        }
+
+        public List<ViewModelMessages> ViewAllMessages(User User)
+        {
+            return context.ViewAllMessages(User);
+        }
+        public List<Message> MessagesForOneProduct(User recipient, User sender, Product product)
+        {
+            return context.MessagesForOneProduct(recipient, sender, product);
+        }
+        public List<ViewModelMessages> MessagesByID(int id)
+        {
+            return context.MessagesByID(id);
         }
     }
 }

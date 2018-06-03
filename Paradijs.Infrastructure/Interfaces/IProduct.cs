@@ -9,9 +9,10 @@ namespace DAL
 {
     public interface IProduct
     {
-        List<Product> ViewProducts();
-        List<Product> ViewProductDetails(int id);
+        List<Product> All();
+        Product Details(int id);
         Product AddProduct(Product product);
+        Product ByID(int id);
         void DeleteProduct(Product product);
         void EditProduct(Product product);
 

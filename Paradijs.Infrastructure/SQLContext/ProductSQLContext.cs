@@ -14,44 +14,44 @@ namespace DAL
     {
         #region Fields
 
-        private string connectionstring()
-        {
-            string _connectionstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\388227\Desktop\Paradijs\Paradijs\App_Data\Paradij_DB.mdf;Integrated Security=True";
-            return _connectionstring;
-        }
-        public static string X = ConfigurationManager.ConnectionStrings["LOCALDATABASE"].ConnectionString;
+        public static string CS = ConfigurationManager.ConnectionStrings["LOCALDATABASE"].ConnectionString;
 
         #endregion
 
         #region methodes
 
-
-        public List<Product> ViewProducts()
+        public List<Product> All()
         {
 
             String query = "SELECT * FROM Product";
             var model = new List<Product>();
             var ImageContext = new ImageSQLContext();
-            using (SqlConnection con = new SqlConnection(X))
+            using (SqlConnection con = new SqlConnection(CS))
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand(query, con);
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                   
-                    model.Add(Utils.ProductFromReader(reader));
+                    var p = new Product();
+                    p.Id = Convert.ToInt32(reader["Id"]);
+                    p.Name = (string)reader["Name"];
+                    p.Ingredients = (string)reader["Ingredients"];
+                    p.Price = Convert.ToDouble(reader["Price"]);
+                    p.Picture = ImageContext.GetImageForProduct(Convert.ToInt32(reader["Id"]));
+
+                    model.Add(p);
                 }
             }
             return model;
         }
 
-        public List<Product> ViewProductDetails(int id)
+        public Product Details(int id)
         {
 
             String sql = "SELECT Id, Name, Ingredients FROM Product Where Id = @id";
-            var model = new List<Product>();
-            using (SqlConnection conn = new SqlConnection(connectionstring()))
+            var model = new Product();
+            using (SqlConnection conn = new SqlConnection(CS))
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -59,7 +59,7 @@ namespace DAL
                 SqlDataReader rdr = cmd.ExecuteReader();
                 while (rdr.Read())
                 {
-                    model.Add(Utils.ProductFromReader(rdr));
+                    model = Utils.ProductFromReader(rdr);
                 }
             }
             return model;
@@ -70,7 +70,7 @@ namespace DAL
         {
             Product newproduct = new Product();
 
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
             con.Open();
             string query = "INSERT INTO Product(Name, Ingredients, Price) Values ( @Name, @Ingredients, @Price ); SELECT SCOPE_IDENTITY()";
             SqlCommand addproduct = new SqlCommand
@@ -96,11 +96,44 @@ namespace DAL
 
         }
 
+        public Product ByID(int id)
+        {
+            using (SqlConnection conn = new SqlConnection(CS))
+            {
+                string query = "SELECT * FROM Product Where Id = @id";
+
+                Product product = new Product();
+
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = conn,
+                    CommandType = CommandType.Text,
+                    CommandText = query,
+                    Parameters =
+                    {
+                        new SqlParameter("@id", id)
+                    }
+                };
+
+                SqlDataReader rdr = cmd.ExecuteReader();
+                while (rdr.Read())
+                {
+                    product = Utils.ProductFromReader(rdr);
+                }
+
+                conn.Close();
+
+                return product;
+            }
+        }
+
         //Bijwerken ......
 
         public void DeleteProduct(Product product)
         {
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
             con.Open(); string query = "Delete From Order Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", product.Id);
@@ -110,7 +143,7 @@ namespace DAL
 
         public void EditProduct(Product product)
         {
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
             con.Open(); string query = "Update Product Set (Name = @Name, Ingredients = @Ingredients, Price =  @Price )Where Id = @Id";
             SqlCommand cmd = new SqlCommand
             {

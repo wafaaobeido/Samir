@@ -45,8 +45,11 @@
                             <p class="btn-add">
                                 <i class="fa fa-shopping-cart"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">Add to cart</a>
                             </p>
-                            <p class="btn-details">
+                            <p>
                                 @Html.ActionLink("More details", "ViewProductDetails", new { id = product.Id })
+                            </p>
+                            <p>
+                                @Html.ActionLink("Order", "ViewProductDetails", new { id = product.Id })
                             </p>
                         </div>
                         <div class="clearfix">
@@ -61,7 +64,6 @@
         <hr />
         foreach (var product in Model)
         {
-
             <div class="col-sm-3">
                 <div class="col-item">
                     <div class="photo">

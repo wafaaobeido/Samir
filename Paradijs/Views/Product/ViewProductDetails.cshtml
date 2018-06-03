@@ -1,5 +1,9 @@
-﻿@using Models
-@model List<Product>
+﻿@model Product
+@using Models
+@{
+    var user = Session["User"] as User;
+    var product = Session["Product"] as Product;
+}
 
 @{
     ViewBag.Title = "ViewProductDetails";
@@ -7,14 +11,13 @@
 
 @if (Session["Product"] == null)
 {
-    Response.Redirect("../Home/Index");
+    Response.Redirect("../Product/ViewProducts");
 }
+
 else
 {
 
 
-    foreach (var product in Model)
-    {
         <h2>Details</h2>
 
         <div>
@@ -22,30 +25,39 @@ else
             <hr />
             <dl class="dl-horizontal">
                 <dd>
-                    @for (int i = 0; i < product.Picture.Count; i++)
+                    @for (int i = 0; i < Model.Picture.Count; i++)
                     {
-                        <img src="@Url.Content(product.Picture[i])" alt="Foto van dit object" />
+                        <img src="@Url.Content(Model.Picture[i])" alt="Foto van dit object" />
                     }
                 </dd>
                 <dt>
-                    @Html.DisplayNameFor(model => product.Name)
+                    @Html.DisplayNameFor(model => model.Name)
                 </dt>
 
                 <dd>
-                    @product.Name
-                </dd>
+                    @Model.Name                </dd>
 
                 <dt>
-                    @Html.DisplayNameFor(model => product.Ingredients)
+                    @Html.DisplayNameFor(model => model.Ingredients)
                 </dt>
 
                 <dd>
-                    @product.Ingredients
+                    @Model.Ingredients
                 </dd>
             </dl>
         </div>
+    
+
+    if (user.Email != "samirobeido76@gmail.com")
+    {
+        <p>
+            @Html.ActionLink("Order", "AddOrder", "Order", new { id = product.Id, userid = user.Id, hostid = 8 }, null)
+        </p>
+    }
+    else
+    {
+
     }
 }
-<p>
-    @Html.ActionLink("Back to List", "Index")
-</p>
+
+

@@ -14,7 +14,8 @@ namespace BLL
 {
     public class UserLogic
     {
-        private UserRepository repo;
+        public UserRepository repo = new UserRepository(new UserSQLContext());
+
         public bool CheckEmail(User user)
         {
             return repo.CheckEmail(user);
@@ -34,6 +35,15 @@ namespace BLL
         public User LogIn(User user)
         {
             return repo.LogIn(user);
+        }
+
+        public void DeleteUser(int id)
+        {
+            repo.DeleteUser(id);
+        }
+        public List<User> AllUsers()
+        {
+            return repo.AllUsers();
         }
         public void SendVerificationLinkEmail(string EmaiID, string ActivationCode, string link)
         {
@@ -84,6 +94,24 @@ namespace BLL
             user.Password = Utils.Hash(user.Password);
             user.ConfirmPassword = Utils.Hash(user.ConfirmPassword);
             user.IsEmailVerified = false;
+        }
+
+        public void SendMessage(Message Message)
+        {
+            repo.SendMessage(Message);
+        }
+
+        public List<ViewModelMessages> ViewAllMessages(User User)
+        {
+            return repo.ViewAllMessages(User);
+        }
+        public List<Message> MessagesForOneProduct(User recipient, User sender, Product product)
+        {
+            return repo.MessagesForOneProduct(recipient, sender, product);
+        }
+        public List<ViewModelMessages> MessagesByID(int id)
+        {
+            return repo.MessagesByID(id);
         }
     }
 }

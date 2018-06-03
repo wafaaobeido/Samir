@@ -14,7 +14,14 @@ namespace DAL
         bool IsActivationCodeExists(User user);
         bool IsValidation(User user);
         User LogIn(User user);
-        void DeleteUser();
+        List<User> AllUsers();
+        void DeleteUser(int id);
         void EditUser();
+
+        void SendMessage(Message Message);
+
+        List<ViewModelMessages> ViewAllMessages(User User);
+        List<Message> MessagesForOneProduct(User recipient, User sender, Product product);
+        List<ViewModelMessages> MessagesByID(int id);
     }
 }

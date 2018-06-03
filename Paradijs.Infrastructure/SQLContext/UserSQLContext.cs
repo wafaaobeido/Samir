@@ -14,13 +14,13 @@ namespace DAL
     {
         #region Fields
 
-        private string connectionstring()
-        {
-            string _connectionstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\388227\Desktop\Paradijs\Paradijs\App_Data\Paradij_DB.mdf;Integrated Security=True";
-            return _connectionstring;
-        }
+        //private string connectionstring()
+        //{
+        //    string _connectionstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\388227\Desktop\Paradijs\Paradijs\App_Data\Paradij_DB.mdf;Integrated Security=True";
+        //    return _connectionstring;
+        //}
 
-        private static object X = ConfigurationManager.ConnectionStrings;
+        public static string CS = ConfigurationManager.ConnectionStrings["LOCALDATABASE"].ConnectionString;
 
         #endregion
 
@@ -31,7 +31,7 @@ namespace DAL
 
         public bool IsEmailExists(User user)
         {
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
 
             try
             {
@@ -61,7 +61,7 @@ namespace DAL
         public User AddUser(User user)
         {
             var newuser = new User();
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
             con.Open();
             string query = "INSERT INTO [User](FirstName, LastName, DateOfBirth, Adress, Postcode, City, EmailID, Mobile, Password, ConfirmPassword, IsEmailVerified, ActivationCode)" +
              " VALUES(@FirstName, @LastName, @DateOfBirth, @Adress, @Postcode, @City, @EmailID, @Mobile,  @Password, @ConfirmPassword, @IsEmailVerified, @ActivationCode)";
@@ -96,7 +96,7 @@ namespace DAL
 
         public bool IsActivationCodeExists(User user)
         {
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
 
             try
             {
@@ -128,7 +128,7 @@ namespace DAL
 
         public bool IsValidation(User user)
         {
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
 
             try
             {
@@ -160,7 +160,7 @@ namespace DAL
         // LogIn
         public User LogIn(User user)
         {
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
             try
             {
                 con.Open();
@@ -173,7 +173,7 @@ namespace DAL
                     {
                         new SqlParameter("@EmailID", user.Email),
                         new SqlParameter("@Password", Utils.Hash(user.Password))
-                       
+
                     }
                 };
                 var model = new List<User>();
@@ -182,6 +182,10 @@ namespace DAL
                 {
                     user = Utils.UserFromReader(rdr);
                 }
+
+                //int x = Convert.ToInt32(Logincmd.ExecuteScalar());
+                //user.Id = x;
+
                 return user;
             }
             finally
@@ -193,14 +197,50 @@ namespace DAL
 
 
         // Bijwerken .....
+        public List<User> AllUsers()
+        {
 
-        public void DeleteUser()
+            var model = new List<User>();
+            using (SqlConnection con = new SqlConnection(CS))
+            {
+                con.Open();
+                SqlCommand cmd = new SqlCommand
+                {
+                    Connection = con,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "AllUsers",
+                    Parameters =
+                    {
+                new SqlParameter("@Email", "samirobeido76@gmail.com")
+                    }
+                };
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    var u = new User();
+                    u.Id = Convert.ToInt32(reader["Id"]);
+                    u.FirstName = (string)reader["FirstName"];
+                    u.LastName = (string)reader["LastName"];
+                    u.Postcode = (string)reader["Postcode"];
+                    u.Email = (string)reader["EmailID"];
+                    u.Mobile = Convert.ToInt32(reader["Mobile"]);
+                    u.DateOfBirth = Convert.ToDateTime(reader["DateOfBirth"]);
+                    u.Adress = (string)reader["Adress"];
+                    u.City = (string)reader["City"];
+                    u.IsEmailVerified = (bool)reader["IsEmailVerified"];
+
+                    model.Add(u);
+                }
+            }
+            return model;
+        }
+        public void DeleteUser(int id)
         {
             User user = new User();
-            SqlConnection con = new SqlConnection(connectionstring());
-            con.Open(); string query = "Delete From User Where Id = @Id";
+            SqlConnection con = new SqlConnection(CS);
+            con.Open(); string query = "Delete From [User] Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@Id", user.Id);
+            cmd.Parameters.AddWithValue("@Id", id);
             cmd.ExecuteNonQuery();
             con.Close();
 
@@ -209,7 +249,7 @@ namespace DAL
         public void EditUser()
         {
             User user = new User();
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
             con.Open(); string query = "Update User Set (FirstName = @FirstName, LastName = @LastName, DateOfBirth = @DateOfBirth, Adress =  @Adress, Postcode = @Postcode, City = @City, Email = @Email, Mobile = @Mobile,  Password = @Password) Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", user.Id);
@@ -224,6 +264,109 @@ namespace DAL
             cmd.Parameters.AddWithValue("@Password", user.Password);
             cmd.ExecuteNonQuery();
             con.Close();
+        }
+
+        public void SendMessage(Message Message)
+        {
+            SqlConnection conn = new SqlConnection(CS);
+            conn.Open();
+            SqlCommand cmd1 = new SqlCommand(
+                @"INSERT INTO [Message] ( SenderID, RecipientID, ProductID, Subject, Body) VALUES (@senderid, @recipientid, @productid, @subject, @body)", conn);
+            cmd1.Parameters.AddWithValue("@recipientid", Message.RecipientID);
+            cmd1.Parameters.AddWithValue("@senderid", Message.SenderID);
+            cmd1.Parameters.AddWithValue("@productid", Message.ProductID);
+            cmd1.Parameters.AddWithValue("@subject", Message.Subject);
+            cmd1.Parameters.AddWithValue("@body", Message.Body);
+            cmd1.ExecuteNonQuery();
+            conn.Close();
+        }
+
+        public List<ViewModelMessages> ViewAllMessages(User User)
+        {
+            List<ViewModelMessages> AllMessages = new List<ViewModelMessages>();
+            SqlConnection conn = new SqlConnection(CS);
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("ShowAllMessages", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@recipientid", User.Id));
+
+
+            using (SqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    ViewModelMessages viewmodelmessage = new ViewModelMessages();
+                    viewmodelmessage.NumberOfMessages = rdr.GetInt32(0);
+                    viewmodelmessage.SenderID = rdr.GetInt32(1);
+                    viewmodelmessage.Productid = rdr.GetInt32(2);
+                    viewmodelmessage.RecipientID = rdr.GetInt32(3);
+                    AllMessages.Add(viewmodelmessage);
+                }
+            }
+            conn.Close();
+            return AllMessages;
+        }
+
+        public List<Message> MessagesForOneProduct(User recipient, User sender, Product product)
+        {
+            List<Message> MessagesForOneProduct = new List<Message>();
+            SqlConnection conn = new SqlConnection(CS);
+            conn.Open();
+            
+            SqlCommand cmd = new SqlCommand("MessagesForOneProduct", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.Add(new SqlParameter("@recipientid", recipient.Id));
+            cmd.Parameters.Add(new SqlParameter("@senderid", sender.Id));
+            cmd.Parameters.Add(new SqlParameter("@productid", product.Id));
+
+            using (SqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    Message Message = new Message();
+                    Message.RecipientID = rdr.GetInt32(0);
+                    Message.SenderID = rdr.GetInt32(1);
+                    Message.ProductID = rdr.GetInt32(2);
+                    Message.Subject = rdr.GetString(3);
+                    Message.Body = rdr.GetString(4);
+              
+                    MessagesForOneProduct.Add(Message);
+                }
+            }
+            conn.Close();
+            return MessagesForOneProduct;
+        }
+
+
+        public List<ViewModelMessages> MessagesByID(int id)
+        {
+            List<ViewModelMessages> AllMessages = new List<ViewModelMessages>();
+            ViewModelMessages viewmodelmessage = new ViewModelMessages();
+            SqlConnection conn = new SqlConnection(CS);
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("MessageById", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@userid", id));
+
+            using (SqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+
+                    viewmodelmessage.NumberOfMessages = rdr.GetInt32(0);
+                    viewmodelmessage.SenderID = rdr.GetInt32(1);
+                    viewmodelmessage.Productid = rdr.GetInt32(2);
+                    viewmodelmessage.RecipientID = rdr.GetInt32(3);
+                    AllMessages.Add(viewmodelmessage);
+                }
+            }
+            conn.Close();
+            return AllMessages;
+
+
         }
 
         #endregion

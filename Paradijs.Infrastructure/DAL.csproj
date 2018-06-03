@@ -41,15 +41,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IOrder.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Repository\ImageRepository.cs" />
     <Compile Include="Interfaces\IImage.cs" />
     <Compile Include="SQLContext\ImageSQLContext.cs" />
-    <Compile Include="Interfaces\IOrder.cs" />
     <Compile Include="Interfaces\IProduct.cs" />
     <Compile Include="Interfaces\IReview.cs" />
     <Compile Include="Interfaces\IUser.cs" />
-    <Compile Include="SQLContext\OrderDB.cs" />
+    <Compile Include="SQLContext\OrderSQLContext.cs" />
     <Compile Include="Repository\ProductRepository.cs" />
     <Compile Include="SQLContext\ProductSQLContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

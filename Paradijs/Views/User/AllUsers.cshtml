@@ -1,0 +1,51 @@
+﻿@using Models
+@model List<User>
+
+@{
+    /**/
+
+    ViewBag.Title = "AllUsers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Users</h2>
+
+<div>
+    <center style="padding: 4rem 2rem;">
+        <h2>Uw gegevens</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Voornaam</th>
+                    <th scope="col">Achternaam</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Gboortedatum</th>
+                    <th scope="col">Mobile</th>
+                    <th scope="col">Postcode</th>
+                    <th scope="col">Adres</th>
+                </tr>
+            </thead>
+            @foreach (var user in Model)
+            {
+                <tbody>
+                    <tr class="table">
+                        <td>@user.FirstName</td>
+                        <td>@user.LastName</td>
+                        <td>@user.Email</td>
+                        <td>@user.DateOfBirth</td>
+                        <td>@user.Mobile</td>
+                        <td>@user.Postcode</td>
+                        <td>@user.Adress @user.City</td>
+                        <td>@Html.ActionLink("Delete", "DeleteUser", new { id = user.Id, controller = "User" })</td>
+                    </tr>
+                   
+                </tbody>
+            }
+        </table>
+    </center>
+
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = user.Id }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Models;
 using BLL;
+using DAL;
 
 
 namespace Samir.Web.Controllers
@@ -53,7 +54,6 @@ namespace Samir.Web.Controllers
         public ActionResult ViewProducts()
         {
             List<Product> model = new List<Product>();
-
             model = pLogic.GetAllproduct();
             Session["Product"] = model;
             return View(model);
@@ -61,12 +61,20 @@ namespace Samir.Web.Controllers
         }
         public ActionResult ViewProductDetails(int id)
         {
-            List<Product> model = new List<Product>();
-
+            Product model = new Product();
             model = pLogic.GetProductDetails(id);
             Session["Product"] = model;
             return View(model);
 
+        }
+
+        public ActionResult MyProducts()
+        {
+            List<Product> AllProducts = new List<Product>();
+
+            AllProducts = pLogic.GetAllproduct();
+            Session["Product"] = AllProducts;
+            return View(AllProducts);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace BLL
 {
     public class ImageLogic
     {
-        private ImageRepository repo;
+        private ImageRepository repo = new ImageRepository(new ImageSQLContext());
         public Image AddImage(Image image)
         {
             return repo.AddImage(image);

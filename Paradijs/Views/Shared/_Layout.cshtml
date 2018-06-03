@@ -7,6 +7,10 @@
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
+@using Models
+@{
+    var user = Session["User"] as User;
+}
 <body>
 
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -26,27 +30,48 @@
                     {
                         <li>@Html.ActionLink("Log in", "Login", "User")</li>
                     }
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    @if (Session["User"] != null)
+                    {
+                        <li>@Html.ActionLink("My messages", "ViewAllMessages", "User", new { id = user.Id }, null)</li>
+
+                        if (user.Email == "samirobeido76@gmail.com")
+                        {
+
+                            <li>@Html.ActionLink("Mijn producten", "MyProducts", "Product")</li>
+                            <li>@Html.ActionLink("Klanten", "AllUsers", new { id = user.Id, controller = "User" })</li>
+
+                        }
+                        else
+                        {
+                            //Need implentation
+                            <li>@Html.ActionLink("Mijn Orders", "MyOrders", "Order")</li>
+                            //
+
+                        }
+                    }
+
+                    @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content"><br /><br />
+    <div class="container body-content">
+        <br /><br />
         @if (Session["Useremail"] != null)
         {
             using (Html.BeginForm("Logout", "User", FormMethod.Post, new { id = "logoutForm" }))
             {
-        <a href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
+                <a href="javascript:document.getElementById('logoutForm').submit()">Log out</a>
             }
         }
 
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Samir</p>
-        </footer>
-    </div>
 
+    </div>
+    <footer>
+        <hr />
+        <p>&copy; @DateTime.Now.Year - Samir</p>
+    </footer>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

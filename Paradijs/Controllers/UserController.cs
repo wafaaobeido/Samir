@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Models;
-using DAL;
 using BLL;
 using System.Net;
 using System.Net.Mail;
@@ -16,7 +15,7 @@ namespace Samir.Controllers
     public class UserController : Controller
     {
 
-        private UserLogic uLogic = new UserLogic();
+        private UserLogic ULogic = new UserLogic();
 
         /* Registration Action */
 
@@ -37,7 +36,7 @@ namespace Samir.Controllers
             // Model validation
             if (ModelState.IsValid)
             {
-                var IsExist = uLogic.CheckEmail(user);
+                var IsExist = ULogic.CheckEmail(user);
 
                 if (IsExist)
                 {
@@ -47,16 +46,16 @@ namespace Samir.Controllers
                 }
 
                 user.ActivationCode = Guid.NewGuid();
-                uLogic.PasswordHashing(user);
+                ULogic.PasswordHashing(user);
 
                 // Save data to Database
-                newuser = uLogic.AddUser(user);
+                newuser = ULogic.AddUser(user);
                 Session["User"] = newuser;
 
                 // Send Email to User
                 var verifyUrl = "/user/VerifyAccount/" + user.ActivationCode;
                 var link = Request.Url.AbsoluteUri.Replace(Request.Url.PathAndQuery, verifyUrl);
-                uLogic.SendVerificationLinkEmail(user.Email, user.ActivationCode.ToString(), link);
+                ULogic.SendVerificationLinkEmail(user.Email, user.ActivationCode.ToString(), link);
 
                 message = "Registration successfully done. Account activation link" +
                     " has been sent to your Email:" + user.Email;
@@ -73,8 +72,6 @@ namespace Samir.Controllers
             return View();
         }
 
-
-
         /* Verify Account */
 
         [HttpGet]
@@ -84,11 +81,11 @@ namespace Samir.Controllers
 
             bool Status = false;
             user.ActivationCode = new Guid(id);
-            var IsExist = uLogic.CheckActivationCode(user);
+            var IsExist = ULogic.CheckActivationCode(user);
             if (IsExist)
             {
                 user.IsEmailVerified = true;
-                uLogic.IsValidation(user);
+                ULogic.IsValidation(user);
                 Status = true;
             }
             else
@@ -112,12 +109,12 @@ namespace Samir.Controllers
         public ActionResult Login(User user)
         {
             string message = "";
-            user = uLogic.LogIn(user);
+            user = ULogic.LogIn(user);
             if (user.IsEmailVerified == true)
             {
                 if (user.Email != "" && Session["Useremail"] == null)
                 {
-                    Response.Cookies.Add(uLogic.RememberMe(user));
+                    Response.Cookies.Add(ULogic.RememberMe(user));
                     Session["Useremail"] = user.Email;
                     Session["User"] = user;
                     ModelState.Clear();
@@ -140,5 +137,71 @@ namespace Samir.Controllers
             Session["Useremail"] = null;
             return RedirectToAction("ViewProducts", "Product");
         }
+
+
+        public ActionResult AllUsers()
+        {
+
+            if (Session["User"] != null)
+            {
+                List<User> model = new List<User>();
+
+                model = ULogic.AllUsers();
+                return View(model);
+
+            }
+            return RedirectToAction("Login", "User");
+        }
+
+        public ActionResult DeleteUser(int id)
+        {
+            ULogic.DeleteUser(id);
+            return RedirectToAction("AllUsers", "User");
+        }
+
+        [HttpGet]
+        public ActionResult CreateMessage(int recipientid, int senderid, int productid)
+        {
+            Message Message = new Message();
+            Message.RecipientID = recipientid;
+            Message.SenderID = senderid;
+            Message.ProductID = productid;
+            return View(Message);
+        }
+
+        [HttpPost]
+        public ActionResult CreateMessage(Message message)
+        {
+            ULogic.SendMessage(message);
+            return RedirectToAction("ViewProducts", "Product");
+        }
+
+        public ActionResult ViewAllMessages(int id)
+        {
+            User user = new User();
+            user.Id = id;
+            return View(ULogic.ViewAllMessages(user));
+
+        }
+
+        public ActionResult MessageBYId(int id)
+        {
+            User user = new User();
+            user.Id = id;
+            return View(ULogic.MessagesByID(id));
+
+        }
+
+        public ActionResult OneConversation(int recipientid, int senderid, int productid)
+        {
+            User recipient = new User();
+            User sender = new User();
+            Product product = new Product();
+            product.Id = productid;
+            recipient.Id = recipientid;
+            sender.Id = senderid;
+            return View(ULogic.MessagesForOneProduct(recipient, sender, product));
+        }
+
     }
 }

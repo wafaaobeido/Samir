@@ -34,7 +34,7 @@ namespace DAL
         /// 
         public static Product ProductFromReader(SqlDataReader reader)
         {
-            ProductSQLContext PContext = new ProductSQLContext();
+            //ProductSQLContext PContext = new ProductSQLContext();
             var ImageContext = new ImageSQLContext();
             Product newproduct = new Product
             {
@@ -55,9 +55,11 @@ namespace DAL
         /// 
         public static User UserFromReader(SqlDataReader reader)
         {
-            ProductSQLContext UContext = new ProductSQLContext();
+            //ProductSQLContext UContext = new ProductSQLContext();
             User newuser = new User
             {
+
+                Id = Convert.ToInt32(reader["Id"]),
                 Email = (string)reader["EmailID"],
                 IsEmailVerified = (bool)reader["IsEmailVerified"]
             };

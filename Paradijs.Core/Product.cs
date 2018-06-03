@@ -19,7 +19,7 @@ namespace Models
         public string Ingredients { get; set; }
         [Display(Name = "Price")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "De Price moet nog ingevoerd worden.")]
-        public decimal Price { get; set; }
+        public double Price { get; set; }
         [Display(Name = "Photo")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Kies tenminste ��n afbeelding")]
         public List<string> Picture { get; set; }

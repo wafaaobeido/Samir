@@ -1,0 +1,43 @@
+﻿@using Models;
+@model List<Product>
+
+@{
+    ViewBag.Title = "MyProducts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>MyProducts</h2>
+
+<div>
+    <center style="padding: 4rem 2rem;">
+        <h2>Uw gegevens</h2>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Naam</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Bestelling quantity</th>
+                </tr>
+            </thead>
+            @foreach (var product in Model)
+            {
+                <tbody>
+                    <tr class="table">
+                        <td>@product.Name</td>
+                        <td>@product.Price</td>
+                        <td><img style=" width: 50px; height: 50px " src="@Url.Content(product.Picture[0])" alt="Foto van dit object" /></td>
+                        <td>@*Hier moet de quantity van de bestelling van die project worden laten gezien => Use:
+                               ** Select Count<OrderID>, ProductID From order_Product 
+                                  Group BY ProductID **
+                            *@
+                        </td>
+                    </tr>
+
+                </tbody>
+            }
+        </table>
+    </center>
+
+</div>
+

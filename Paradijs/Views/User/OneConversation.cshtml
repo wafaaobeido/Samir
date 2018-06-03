@@ -1,0 +1,57 @@
+﻿@using Models
+@model IEnumerable<Models.Message>
+
+@{
+    ViewBag.Title = "OneConversation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*@if (Session["User"] == null)
+    {
+        Response.Redirect("../Product/ViewProducts");
+    }
+    else
+    {*@
+@{
+
+    var user = Session["User"] as User;
+
+}
+@if (user != null)
+{
+    <h2>OneConversation</h2>
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SenderID)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Subject)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Body)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SenderID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Body)
+            </td>
+        </tr>
+        }
+    </table>
+
+
+    @Html.ActionLink("Bericht sturen", "CreateMessage", "User", new { recipientid = Model.First().SenderID, senderid = user.Id, productid = Model.First().ProductID }, null)
+
+}

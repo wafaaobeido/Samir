@@ -10,6 +10,7 @@ namespace DAL
     public class ProductRepository
     {
         private IProduct context;
+
         public ProductRepository(IProduct context)
         {
             this.context = context;
@@ -20,11 +21,15 @@ namespace DAL
         }
         public List<Product> GetAllproduct()
         {
-            return context.ViewProducts();
+            return context.All();
         }
-        public List<Product> GetProductDetails(int id)
+        public Product GetProductDetails(int id)
         {
-            return context.ViewProductDetails(id);
+            return context.Details(id);
+        }
+        public Product ByID(int id)
+        {
+            return context.ByID(id);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace BLL
     public class ProductLogic
     {
 
-        private ProductRepository repo;
+        public ProductRepository repo = new ProductRepository(new ProductSQLContext());
 
         public Product AddProduct(Product product)
         {
@@ -23,10 +23,15 @@ namespace BLL
             return repo.GetAllproduct();
         }
 
-        public List<Product> GetProductDetails(int id)
+        public Product GetProductDetails(int id)
         {
             return repo.GetProductDetails(id);
         }
+        public Product ByID(int id)
+        {
+            return repo.ByID(id);
+        }
+
 
     }
 }

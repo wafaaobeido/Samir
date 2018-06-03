@@ -1,6 +1,7 @@
 ﻿using Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -13,11 +14,9 @@ namespace DAL
     {
         #region Fields
 
-        private string connectionstring()
-        {
-            string _connectionstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\388227\Desktop\Paradijs\Paradijs\App_Data\Paradij_DB.mdf;Integrated Security=True";
-            return _connectionstring;
-        }
+        private string CS = ConfigurationManager.ConnectionStrings["LOCALDATABASE"].ConnectionString;
+
+
 
         #endregion
 
@@ -26,7 +25,7 @@ namespace DAL
         public Image AddImage(Image image)
         {
             Image newimage = image;
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(CS);
             try
             {
                 con.Open();
@@ -67,7 +66,7 @@ namespace DAL
 
             var Images = new List<string>();
 
-            using (SqlConnection conn = new SqlConnection(connectionstring()))
+            using (SqlConnection conn = new SqlConnection(CS))
             {
                 conn.Open();
                 Image image = new Image();
