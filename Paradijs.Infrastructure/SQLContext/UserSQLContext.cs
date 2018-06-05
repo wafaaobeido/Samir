@@ -272,8 +272,8 @@ namespace DAL
             conn.Open();
             SqlCommand cmd1 = new SqlCommand(
                 @"INSERT INTO [Message] ( SenderID, RecipientID, ProductID, Subject, Body) VALUES (@senderid, @recipientid, @productid, @subject, @body)", conn);
-            cmd1.Parameters.AddWithValue("@recipientid", Message.RecipientID);
-            cmd1.Parameters.AddWithValue("@senderid", Message.SenderID);
+            cmd1.Parameters.AddWithValue("@recipientid", Message.Recipient);
+            cmd1.Parameters.AddWithValue("@senderid", Message.Sender);
             cmd1.Parameters.AddWithValue("@productid", Message.ProductID);
             cmd1.Parameters.AddWithValue("@subject", Message.Subject);
             cmd1.Parameters.AddWithValue("@body", Message.Body);
@@ -326,8 +326,8 @@ namespace DAL
                 while (rdr.Read())
                 {
                     Message Message = new Message();
-                    Message.RecipientID = rdr.GetInt32(0);
-                    Message.SenderID = rdr.GetInt32(1);
+                    Message.Recipient = rdr.GetInt32(0);
+                    Message.Sender = rdr.GetInt32(1);
                     Message.ProductID = rdr.GetInt32(2);
                     Message.Subject = rdr.GetString(3);
                     Message.Body = rdr.GetString(4);
@@ -340,14 +340,41 @@ namespace DAL
         }
 
 
-        public List<ViewModelMessages> MessagesByID(int id)
+        public List<ViewModelMessages> MessageIndex(int id)
         {
             List<ViewModelMessages> AllMessages = new List<ViewModelMessages>();
             ViewModelMessages viewmodelmessage = new ViewModelMessages();
             SqlConnection conn = new SqlConnection(CS);
             conn.Open();
 
-            SqlCommand cmd = new SqlCommand("MessageById", conn);
+            SqlCommand cmd = new SqlCommand("MessageIndex", conn);
+            cmd.CommandType = CommandType.StoredProcedure;
+            cmd.Parameters.Add(new SqlParameter("@userid", id));
+
+            using (SqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+
+                    viewmodelmessage.NumberOfMessages = rdr.GetInt32(0);
+                    viewmodelmessage.SenderID = rdr.GetInt32(1);
+                    viewmodelmessage.Productid = rdr.GetInt32(2);
+                    viewmodelmessage.RecipientID = rdr.GetInt32(3);
+                    AllMessages.Add(viewmodelmessage);
+                }
+            }
+            conn.Close();
+            return AllMessages;
+        }
+
+        public List<ViewModelMessages> MessageSent(int id)
+        {
+            List<ViewModelMessages> AllMessages = new List<ViewModelMessages>();
+            ViewModelMessages viewmodelmessage = new ViewModelMessages();
+            SqlConnection conn = new SqlConnection(CS);
+            conn.Open();
+
+            SqlCommand cmd = new SqlCommand("MessageSent", conn);
             cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.Add(new SqlParameter("@userid", id));
 

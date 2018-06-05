@@ -159,49 +159,5 @@ namespace Samir.Controllers
             return RedirectToAction("AllUsers", "User");
         }
 
-        [HttpGet]
-        public ActionResult CreateMessage(int recipientid, int senderid, int productid)
-        {
-            Message Message = new Message();
-            Message.RecipientID = recipientid;
-            Message.SenderID = senderid;
-            Message.ProductID = productid;
-            return View(Message);
-        }
-
-        [HttpPost]
-        public ActionResult CreateMessage(Message message)
-        {
-            ULogic.SendMessage(message);
-            return RedirectToAction("ViewProducts", "Product");
-        }
-
-        public ActionResult ViewAllMessages(int id)
-        {
-            User user = new User();
-            user.Id = id;
-            return View(ULogic.ViewAllMessages(user));
-
-        }
-
-        public ActionResult MessageBYId(int id)
-        {
-            User user = new User();
-            user.Id = id;
-            return View(ULogic.MessagesByID(id));
-
-        }
-
-        public ActionResult OneConversation(int recipientid, int senderid, int productid)
-        {
-            User recipient = new User();
-            User sender = new User();
-            Product product = new Product();
-            product.Id = productid;
-            recipient.Id = recipientid;
-            sender.Id = senderid;
-            return View(ULogic.MessagesForOneProduct(recipient, sender, product));
-        }
-
     }
 }

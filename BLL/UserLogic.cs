@@ -109,9 +109,13 @@ namespace BLL
         {
             return repo.MessagesForOneProduct(recipient, sender, product);
         }
-        public List<ViewModelMessages> MessagesByID(int id)
+        public List<ViewModelMessages> MessageInbox(int id)
         {
-            return repo.MessagesByID(id);
+            return repo.MessageIndex(id);
+        }
+        public List<ViewModelMessages> MessageSent(int id)
+        {
+            return repo.MessageSent(id);
         }
     }
 }

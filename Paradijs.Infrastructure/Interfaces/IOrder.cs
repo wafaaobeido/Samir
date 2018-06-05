@@ -12,7 +12,10 @@ namespace DAL
     {
         Order GetInfo(int clientid, int productid, int hostid);
         void StandardMessage(int UserHostID, int UserRecipientID, string messages, string Subject, int ProductID);
-        string AddOrder(int Klantid, int Verkoperid, int Productid);
+        string AddOrder(int Klantid, int Verkoperid, int Productid, int Quantity);
+        string KoppelTabelOrder(int Klantid, int Verkoperid, int Productid, int quantity);
+        List<Order> ShowOrders(int id);
+        List<Order> OrdersByUsers();
         void DeleteOrder();
         void EditOrder();
     }

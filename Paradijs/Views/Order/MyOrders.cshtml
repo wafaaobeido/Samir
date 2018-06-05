@@ -1,0 +1,55 @@
+﻿@using Models
+@model List<Order>
+
+@{
+    ViewBag.Title = "MyOrders";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var product = Session["Product"] as Product;
+}
+
+<h2>MyOrders</h2>
+
+<div>
+    <h4>Order</h4>
+    <hr />
+
+    <table class="table">
+        <tr>
+            <th>
+                Naam 
+            </th>
+            <th>
+               Prijs 
+            </th>
+            <th>
+               Order time
+            </th>
+            <th>
+                Delivery time
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.product.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.product.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ordertime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DeliveryTime)
+                </td>
+            </tr>
+        }
+        </table>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")*@
+</p>

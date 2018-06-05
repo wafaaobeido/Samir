@@ -1,0 +1,67 @@
+﻿@using Models
+@model List<Models.Order>
+
+@{
+
+    ViewBag.Title = "AllMessages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@*@if (Session["User"] == null)
+    {
+        Response.Redirect("../Product/ViewProducts");
+    }
+    else
+    {*@
+@{
+    var user = Session["User"] as User;
+}
+@if (user != null)
+{
+
+
+    <h2>All orders</h2>
+
+    <table class="table">
+        <tr>
+            <th>
+                Besteller
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                Adress, Postcode
+            </th>
+            <th>
+                Bestellingen
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.User.Adress), @Html.DisplayFor(modelItem => item.User.Postcode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "#", "#"@*, new { productname = , quantity = , totaalprice = }, null*@)
+            </td>
+        </tr>
+        }
+
+    </table>
+
+
+}

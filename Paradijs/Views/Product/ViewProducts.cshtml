@@ -5,12 +5,13 @@
 
     ViewBag.Title = "ViewProduct";
 }
-@{ 
+@{
     var user = Session["User"] as User;
 }
 
 <div>
     <h4>Gerechten</h4>
+
     @if (Session["User"] != null && user.Email == "samirobeido76@gmail.com")
     {
         <p>
@@ -23,10 +24,10 @@
             <div class="col-sm-3">
                 <div class="col-item">
                     <div class="photo">
-                        <img  src="@Url.Content(product.Picture[0])" alt="Foto van dit object" />
+                        <img src="@Url.Content(product.Picture[0])" alt="Foto van dit object" />
                     </div>
                     <div class="info">
-                        <div class="row"> 
+                        <div class="row">
                             <div class="price col-md-6">
                                 <h5>
                                     @product.Name
@@ -47,9 +48,6 @@
                             </p>
                             <p>
                                 @Html.ActionLink("More details", "ViewProductDetails", new { id = product.Id })
-                            </p>
-                            <p>
-                                @Html.ActionLink("Order", "ViewProductDetails", new { id = product.Id })
                             </p>
                         </div>
                         <div class="clearfix">

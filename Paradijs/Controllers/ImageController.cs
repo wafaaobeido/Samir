@@ -9,7 +9,7 @@ namespace Samir.Web.Controllers
 {
     public class ImageController : Controller
     {
-        private ImageLogic iLogic;
+        private ImageLogic ILogic;
 
         // GET: Image
         [HttpGet]
@@ -31,7 +31,7 @@ namespace Samir.Web.Controllers
             image.ImageFile.SaveAs(filename);
             
 
-            image = iLogic.AddImage(image);
+            image = ILogic.AddImage(image);
             Session["Image"] = image;
 
             ModelState.Clear();

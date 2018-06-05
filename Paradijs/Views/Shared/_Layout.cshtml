@@ -32,19 +32,20 @@
                     }
                     @if (Session["User"] != null)
                     {
-                        <li>@Html.ActionLink("My messages", "ViewAllMessages", "User", new { id = user.Id }, null)</li>
+                        <li>@Html.ActionLink("My messages", "ViewAllMessages", "Message", new { id = user.Id }, null)</li>
 
                         if (user.Email == "samirobeido76@gmail.com")
                         {
 
                             <li>@Html.ActionLink("Mijn producten", "MyProducts", "Product")</li>
+                            <li>@Html.ActionLink("Alle bestellingen", "OrdersByUser", "Order")</li>
                             <li>@Html.ActionLink("Klanten", "AllUsers", new { id = user.Id, controller = "User" })</li>
 
                         }
                         else
                         {
                             //Need implentation
-                            <li>@Html.ActionLink("Mijn Orders", "MyOrders", "Order")</li>
+                            <li>@Html.ActionLink("Mijn Orders", "MyOrders", "Order", new { id = user.Id }, null)</li>
                             //
 
                         }

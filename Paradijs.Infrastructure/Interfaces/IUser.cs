@@ -22,6 +22,7 @@ namespace DAL
 
         List<ViewModelMessages> ViewAllMessages(User User);
         List<Message> MessagesForOneProduct(User recipient, User sender, Product product);
-        List<ViewModelMessages> MessagesByID(int id);
+        List<ViewModelMessages> MessageIndex(int id);
+        List<ViewModelMessages> MessageSent(int id);
     }
 }

@@ -77,36 +77,94 @@ namespace DAL
         }
 
 
-        public string AddOrder(int Klantid, int Verkoperid, int Productid)
+        public string AddOrder(int Klantid, int Verkoperid, int Productid, int quantity)
         {
             SqlConnection con = new SqlConnection(CS);
             Order o = new Order();
-            string querynaam = "SELECT Id FROM User WHERE FirstName = @username";
-            SqlCommand cmdnaam = new SqlCommand(querynaam, con);
+
+            ////Get the userid qua the firstname...
+            //string querynaam = "SELECT Id FROM User WHERE FirstName = @username";
+            //SqlCommand cmdnaam = new SqlCommand(querynaam, con);
+
             o.verkoper.Id = Verkoperid;
             o.User.Id = Klantid;
             o.product.Id = Productid;
 
             string message = "";
-            string query = "INSERT INTO [Order] (UserId, OrderTime, DeliveryTime, ProductId) VALUES (@klantid, @OrderTime, @DeliveryTime,  @productid)";
+            //Insert into orders the informtions including the userd and productid
+            string query = "INSERT INTO [Order] (UserId, OrderTime, DeliveryTime) VALUES (@klantid, @OrderTime, @DeliveryTime)";
             con.Open();
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@klantid", o.User.Id);
-            cmd.Parameters.AddWithValue("@productid", o.product.Id);
+            //cmd.Parameters.AddWithValue("@productid", o.product.Id);
             cmd.Parameters.AddWithValue("@OrderTime", o.Ordertime);
             cmd.Parameters.AddWithValue("@DeliveryTime", o.DeliveryTime);
             cmd.ExecuteNonQuery();
             con.Close();
             message = "succes";
-            //string queryoccupied = "UPDATE product SET Occupied = 1, RESERVED = 0 WHERE EstateID = @estateid";
-            //con.Open();
-            //SqlCommand cmdocc = new SqlCommand(queryoccupied, con);
-            //cmdocc.Parameters.AddWithValue("@estateid", Productid);
-            //cmdocc.ExecuteNonQuery();
-            //con.Close();
+
             return message;
         }
 
+        public string KoppelTabelOrder(int Klantid, int Verkoperid, int Productid, int quantity)
+        {
+            SqlConnection con = new SqlConnection(CS);
+            Order o = new Order();
+
+
+            o.verkoper.Id = Verkoperid;
+            o.User.Id = Klantid;
+            o.product.Id = Productid;
+
+            string message = "";
+
+            //Insert the productid and the orderid to order-product tabel
+            string queryKoppel = "INSERT INTO [Order_Product] (OrderId, ProductId, Quantity) " +
+                       "VALUES((Select Id From[Order] where Id = (select max(Id) from[Order]  where UserId = @userid)), @productid, @quantity)";
+            con.Open();
+            SqlCommand cmdKoppel = new SqlCommand(queryKoppel, con);
+            cmdKoppel.Parameters.AddWithValue("@userid", o.User.Id);
+            cmdKoppel.Parameters.AddWithValue("@productid", o.product.Id);
+            cmdKoppel.Parameters.AddWithValue("@quantity", quantity);
+            cmdKoppel.ExecuteNonQuery();
+            con.Close();
+
+            message = "succes";
+
+            return message;
+        }
+        public List<Order> ShowOrders(int id)
+        {
+            SqlConnection con = new SqlConnection(CS);
+            string message = "";
+            string qry = "Select Name, Price, OrderTime, DeliveryTime " +
+                         "from [Order_Product] " +
+                         "INNER JOIN [Order] On [Order].Id = [Order_Product].OrderId " +
+                         "INNER JOIN [Product] On [Product].Id = [Order_Product].ProductId " +
+                         "WHERE UserId = @userid";
+            con.Open();
+            SqlCommand cmd = new SqlCommand(qry, con);
+            cmd.Parameters.AddWithValue("@userid", id);
+            var model = new List<Order>();
+            using (SqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    var o = new Order();
+                    o.product.Name = (string)rdr["Name"];
+                    o.product.Price = Convert.ToDouble(rdr["Price"]);
+                    o.Ordertime = Convert.ToDateTime(rdr["Ordertime"]);
+                    o.DeliveryTime = Convert.ToDateTime(rdr["DeliveryTime"]);
+                    model.Add(o);
+                }
+            }
+            con.Close();
+            message = "succes";
+
+            return model;
+        }
+
+        // should be deleted
         public void StandardMessage(int UserHostID, int UserRecipientID, string messages, string Subject, int ProductID)
         {
             SqlConnection conn = new SqlConnection(CS);
@@ -120,6 +178,37 @@ namespace DAL
             cmd1.Parameters.AddWithValue("@body", messages);
             cmd1.ExecuteNonQuery();
             conn.Close();
+        }
+
+        public List<Order> OrdersByUsers()
+        {
+            List<Order> ordersbyuser = new List<Order>();
+            SqlConnection conn = new SqlConnection(CS);
+            string q = "Select [User].FirstName, [User].EmailID , [User].Postcode, [User].Adress, count([Order].Id) as totaalbestelt " +
+                       "From[User] " +
+                       "Full Outer Join[Order] on[User].Id = [Order].UserId " +
+                       "WHERE [User].EmailID != 'samirobeido76@gmail.com' " +
+                       "Group by[User].FirstName, [User].EmailID , [User].Postcode, [User].Adress";
+
+            conn.Open();
+            SqlCommand cmd = new SqlCommand(q, conn);
+
+
+            using (SqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    Order orders = new Order();
+                    orders.User.FirstName = rdr.GetString(0);
+                    orders.User.Email = rdr.GetString(1);
+                    orders.User.Postcode = rdr.GetString(2);
+                    orders.User.Adress = rdr.GetString(3);
+                    orders.Id = rdr.GetInt32(4);
+                    ordersbyuser.Add(orders);
+                }
+            }
+            conn.Close();
+            return ordersbyuser;
         }
 
         // Bijwerken

@@ -25,19 +25,44 @@ namespace Samir.Web.Controllers
         {
             var clientID = Request.Form["User.Id"];
             var hostID = Request.Form["Verkoper.Id"];
+
+            // quantity bepalen
+            int qua = 0;
             string message = "";
 
             Product product = PLogic.ByID(Convert.ToInt32(id));
-            string MessageforRent = "Hallo, Ik zou graag uw gercht : " + product.Name + " willen bestellen. ";
-            OLogic.StandardMessage(Convert.ToInt32(clientID), Convert.ToInt32(hostID), MessageforRent, product.Name, Convert.ToInt32(id));
+            message = OLogic.AddOrder(Convert.ToInt32(clientID), Convert.ToInt32(hostID), Convert.ToInt32(id), qua) +
+                OLogic.KoppelTabelOrder(Convert.ToInt32(clientID), Convert.ToInt32(hostID), Convert.ToInt32(id), qua);
 
-
-            message = OLogic.AddOrder(Convert.ToInt32(clientID), Convert.ToInt32(hostID), Convert.ToInt32(id));
             if (message == "succes")
             {
-                return View();
+                return RedirectToAction("ViewProducts", "Product");
             }
             return View();
+        }
+
+        [HttpGet]
+        public ActionResult MyOrders(int id)
+        {
+            if (Session["User"] != null)
+            {
+                List<Order> model = new List<Order>();
+                
+
+                model = OLogic.ShowOrder(id);
+                return View(model);
+
+            }
+            return RedirectToAction("Login", "User");
+
+
+
+        }
+
+        [HttpGet]
+        public ActionResult OrdersByUser()
+        {
+            return View(OLogic.OrdersByUsers());
         }
     }
 }

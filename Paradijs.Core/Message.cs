@@ -11,8 +11,8 @@ namespace Models
     {
         public int Id { get; set; }
         // change to user 
-        public int SenderID { get; set; }
-        public int RecipientID { get; set; }
+        public int Sender { get; set; }
+        public int Recipient { get; set; }
         public int ProductID { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }

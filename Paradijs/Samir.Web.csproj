@@ -150,6 +150,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImageController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
     <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -227,10 +228,13 @@
     <Content Include="Views\User\AllUsers.cshtml" />
     <Content Include="Views\Product\MyProducts.cshtml" />
     <Content Include="Views\Order\AddOrder.cshtml" />
-    <Content Include="Views\User\CreateMessage.cshtml" />
-    <Content Include="Views\User\ViewAllMessages.cshtml" />
-    <Content Include="Views\User\OneConversation.cshtml" />
-    <Content Include="Views\User\MessageBYId.cshtml" />
+    <Content Include="Views\Message\CreateMessage.cshtml" />
+    <Content Include="Views\Message\ViewAllMessages.cshtml" />
+    <Content Include="Views\Message\OneConversation.cshtml" />
+    <Content Include="Views\Message\MessageSent.cshtml" />
+    <Content Include="Views\Message\MessageInbox.cshtml" />
+    <Content Include="Views\Order\MyOrders.cshtml" />
+    <Content Include="Views\Order\OrdersByUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />

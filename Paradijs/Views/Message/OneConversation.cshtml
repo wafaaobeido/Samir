@@ -52,6 +52,6 @@
     </table>
 
 
-    @Html.ActionLink("Bericht sturen", "CreateMessage", "User", new { recipientid = Model.First().SenderID, senderid = user.Id, productid = Model.First().ProductID }, null)
+    @Html.ActionLink("Bericht sturen", "CreateMessage", "Message", new { recipientid = Model.First().SenderID, senderid = user.Id, productid = Model.First().ProductID }, null)
 
 }

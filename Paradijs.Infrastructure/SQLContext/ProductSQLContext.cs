@@ -23,7 +23,8 @@ namespace DAL
         public List<Product> All()
         {
 
-            String query = "SELECT * FROM Product";
+            string query = "SELECT * from Product";
+
             var model = new List<Product>();
             var ImageContext = new ImageSQLContext();
             using (SqlConnection con = new SqlConnection(CS))
@@ -39,7 +40,6 @@ namespace DAL
                     p.Ingredients = (string)reader["Ingredients"];
                     p.Price = Convert.ToDouble(reader["Price"]);
                     p.Picture = ImageContext.GetImageForProduct(Convert.ToInt32(reader["Id"]));
-
                     model.Add(p);
                 }
             }

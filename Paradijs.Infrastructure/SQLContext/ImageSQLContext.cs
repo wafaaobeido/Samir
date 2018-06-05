@@ -56,8 +56,6 @@ namespace DAL
 
         }
 
-
-
         public List<string> GetImageForProduct(int id)
         {
             Product estate = new Product();

@@ -1,0 +1,66 @@
+﻿@using Models
+@model IEnumerable<Models.ViewModelMessages>
+
+@{
+                /**/
+
+                /**/
+
+                /**/
+
+                /**/
+
+                ViewBag.Title = "Index";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    var user = Session["User"] as User;
+}
+
+<div>
+    @Html.ActionLink("All messages", "ViewAllMessages", "Message", new { id = user.Id }, null)
+</div>
+<div>
+
+    @Html.ActionLink("Index", "MessageInbox", "Message", new { id = user.Id }, null)
+</div>
+<div>
+
+    @Html.ActionLink("Sent", "MessageSent", "Message", new { id = user.Id }, null)
+</div>
+
+<h2>Sent</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Productid)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RecipientID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NumberOfMessages)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Productid)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipientID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NumberOfMessages)
+            </td>
+            <td>
+                @Html.ActionLink("Details", "OneConversation", "Message", new { recipientid = item.RecipientID, senderid = item.SenderID, productid = item.Productid }, null)
+            </td>
+        </tr>
+    }
+</table>

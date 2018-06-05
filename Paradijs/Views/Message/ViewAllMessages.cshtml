@@ -19,10 +19,17 @@
 }
 @if (user != null)
 {
-    @Html.ActionLink("All messages", "ViewAllMessages", "User")
-    @Html.ActionLink("Index", "MessageBYId", "User", new { id = user.Id }, null)
-    @Html.ActionLink("Sent", "MessageBYId", "User", new { id = user.Id }, null)
+    <div>
+        @Html.ActionLink("All messages", "ViewAllMessages", "Message", new { id = user.Id }, null)
+    </div>
+    <div>
 
+        @Html.ActionLink("Index", "MessageInbox", "Message", new { id = user.Id }, null)
+    </div>
+    <div>
+
+        @Html.ActionLink("Sent", "MessageSent", "Message", new { id = user.Id }, null)
+    </div>
     <h2>AllMessages</h2>
 
     <table class="table">
@@ -58,7 +65,7 @@
                     @Html.DisplayFor(modelItem => item.NumberOfMessages)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "OneConversation", "User", new { recipientid = item.RecipientID, senderid = item.SenderID, productid = item.Productid }, null)
+                    @Html.ActionLink("Details", "OneConversation", "Message", new { recipientid = item.RecipientID, senderid = item.SenderID, productid = item.Productid }, null)
                 </td>
             </tr>
         }

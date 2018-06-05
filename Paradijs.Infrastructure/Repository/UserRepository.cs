@@ -57,9 +57,13 @@ namespace DAL
         {
             return context.MessagesForOneProduct(recipient, sender, product);
         }
-        public List<ViewModelMessages> MessagesByID(int id)
+        public List<ViewModelMessages> MessageIndex(int id)
         {
-            return context.MessagesByID(id);
+            return context.MessageIndex(id);
+        }
+        public List<ViewModelMessages> MessageSent(int id)
+        {
+            return context.MessageSent(id);
         }
     }
 }

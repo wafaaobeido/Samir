@@ -18,13 +18,25 @@ namespace BLL
             order = repo.GetInfo(clientid, productid, hostid);
             return order;
         }
-        public string AddOrder(int Klantid, int Verkoperid, int Productid)
+        public string AddOrder(int Klantid, int Verkoperid, int Productid, int quantity)
         {
-            return repo.AddOrder(Klantid, Verkoperid, Productid);
+            return repo.AddOrder(Klantid, Verkoperid, Productid, quantity);
+        }
+        public string KoppelTabelOrder(int Klantid, int Verkoperid, int Productid, int quantity)
+        {
+            return repo.KoppelTabelOrder(Klantid, Verkoperid, Productid, quantity);
+        }
+        public List<Order> ShowOrder(int id)
+        {
+            return repo.ShowOrders(id);
         }
         public void StandardMessage(int UserHostID, int UserRecipientID, string messages, string Subject, int ProductID)
         {
             repo.StandardMessage(UserHostID, UserRecipientID, messages, Subject, ProductID);
+        }
+        public List<Order> OrdersByUsers()
+        {
+            return repo.OrdersByUsers();
         }
     }
 }
