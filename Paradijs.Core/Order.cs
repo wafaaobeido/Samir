@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Models
 {
-    public class Order
+    public class Order 
     {
         #region Properties
         public int Id { get; set; }

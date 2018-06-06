@@ -14,9 +14,7 @@ namespace DAL
     {
         #region Fields
 
-        private string CS = ConfigurationManager.ConnectionStrings["LOCALDATABASE"].ConnectionString;
-
-
+        private CS_Databse cs_database = new CS_Databse();
 
         #endregion
 
@@ -25,7 +23,7 @@ namespace DAL
         public Image AddImage(Image image)
         {
             Image newimage = image;
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             try
             {
                 con.Open();
@@ -64,7 +62,7 @@ namespace DAL
 
             var Images = new List<string>();
 
-            using (SqlConnection conn = new SqlConnection(CS))
+            using (SqlConnection conn = new SqlConnection(cs_database.CS()))
             {
                 conn.Open();
                 Image image = new Image();

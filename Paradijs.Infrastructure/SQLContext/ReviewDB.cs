@@ -12,11 +12,7 @@ namespace DAL
     {
         #region Fields
 
-        private string connectionstring()
-        {
-            string _connectionstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\388227\Desktop\Paradijs\Paradijs\App_Data\Paradij_DB.mdf;Integrated Security=True";
-            return _connectionstring;
-        }
+        private CS_Databse cs_database = new CS_Databse();
 
         #endregion
 
@@ -29,7 +25,7 @@ namespace DAL
         public void AddReview()
         {
             Review review = new Review();
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "INSERT INTO Review(Id, Buyer, Content, PublishingTime, ProductId" +
              " VALUES (@Id, @Buyer, @Content, @PublishingTime, @ProductId)";
             SqlCommand cmd = new SqlCommand(query, con);
@@ -44,7 +40,7 @@ namespace DAL
         public void DeleteReview()
         {
             Review review = new Review();
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "Delete From Review Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", review.Id);
@@ -54,7 +50,7 @@ namespace DAL
         public void EditReview()
         {
             Review review = new Review();
-            SqlConnection con = new SqlConnection(connectionstring());
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "Update Review Set (Byuer = @Buyer, Content = @Content, PiblishingTime =  @PublishingTime, ProductId= @ProductId )Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", review.Id);

@@ -5,7 +5,6 @@ using System.Web;
 using System.Web.Mvc;
 using Models;
 using BLL;
-using DAL;
 
 
 namespace Samir.Web.Controllers

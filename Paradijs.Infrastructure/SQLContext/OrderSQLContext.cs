@@ -14,7 +14,7 @@ namespace DAL
     {
         #region Fields
 
-        private string CS = ConfigurationManager.ConnectionStrings["LOCALDATABASE"].ConnectionString;
+        private CS_Databse cs_database = new CS_Databse();
 
         #endregion
 
@@ -26,7 +26,7 @@ namespace DAL
 
             //......................\\
             string getproduct = "SELECT * FROM Product WHERE Id = @productid";
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             SqlCommand cmd = new SqlCommand(getproduct, con);
             con.Open();
             cmd.Parameters.AddWithValue("@productid", productid);
@@ -79,7 +79,7 @@ namespace DAL
 
         public string AddOrder(int Klantid, int Verkoperid, int Productid, int quantity)
         {
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             Order o = new Order();
 
             ////Get the userid qua the firstname...
@@ -108,7 +108,7 @@ namespace DAL
 
         public string KoppelTabelOrder(int Klantid, int Verkoperid, int Productid, int quantity)
         {
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             Order o = new Order();
 
 
@@ -135,7 +135,7 @@ namespace DAL
         }
         public List<Order> ShowOrders(int id)
         {
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             string message = "";
             string qry = "Select Name, Price, OrderTime, DeliveryTime " +
                          "from [Order_Product] " +
@@ -167,7 +167,7 @@ namespace DAL
         // should be deleted
         public void StandardMessage(int UserHostID, int UserRecipientID, string messages, string Subject, int ProductID)
         {
-            SqlConnection conn = new SqlConnection(CS);
+            SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
             SqlCommand cmd1 = new SqlCommand(
                 @"INSERT INTO [Message] (RecipientID, SenderID, ProductID, Subject, Body) VALUES (@userid_recipient, @userid_sender, @productid, @subject, @body)", conn);
@@ -183,10 +183,10 @@ namespace DAL
         public List<Order> OrdersByUsers()
         {
             List<Order> ordersbyuser = new List<Order>();
-            SqlConnection conn = new SqlConnection(CS);
+            SqlConnection conn = new SqlConnection(cs_database.CS());
             string q = "Select [User].FirstName, [User].EmailID , [User].Postcode, [User].Adress, count([Order].Id) as totaalbestelt " +
                        "From[User] " +
-                       "Full Outer Join[Order] on[User].Id = [Order].UserId " +
+                       "inner Join[Order] on[User].Id = [Order].UserId " +
                        "WHERE [User].EmailID != 'samirobeido76@gmail.com' " +
                        "Group by[User].FirstName, [User].EmailID , [User].Postcode, [User].Adress";
 
@@ -216,7 +216,7 @@ namespace DAL
         public void DeleteOrder()
         {
             Order order = new Order();
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "Delete From Order Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", order.Id);
@@ -226,7 +226,7 @@ namespace DAL
         public void EditOrder()
         {
             Order order = new Order();
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "Update Order Set (UserId = @UserId, OrderTime = @OrderTime, DeliveryTime =  @DeliveryTime )Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", order.Id);

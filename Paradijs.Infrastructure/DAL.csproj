@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CS_Databse.cs" />
     <Compile Include="Interfaces\IOrder.cs" />
+    <Compile Include="Repository\OrderRepository.cs" />
+    <Compile Include="SQLContext\MessageSQLContext.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Repository\ImageRepository.cs" />
     <Compile Include="Interfaces\IImage.cs" />

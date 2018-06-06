@@ -14,7 +14,7 @@ namespace DAL
     {
         #region Fields
 
-        public static string CS = ConfigurationManager.ConnectionStrings["LOCALDATABASE"].ConnectionString;
+        private CS_Databse cs_database = new CS_Databse();
 
         #endregion
 
@@ -27,7 +27,7 @@ namespace DAL
 
             var model = new List<Product>();
             var ImageContext = new ImageSQLContext();
-            using (SqlConnection con = new SqlConnection(CS))
+            using (SqlConnection con = new SqlConnection(cs_database.CS()))
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand(query, con);
@@ -51,7 +51,7 @@ namespace DAL
 
             String sql = "SELECT Id, Name, Ingredients FROM Product Where Id = @id";
             var model = new Product();
-            using (SqlConnection conn = new SqlConnection(CS))
+            using (SqlConnection conn = new SqlConnection(cs_database.CS()))
             {
                 conn.Open();
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -70,7 +70,7 @@ namespace DAL
         {
             Product newproduct = new Product();
 
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open();
             string query = "INSERT INTO Product(Name, Ingredients, Price) Values ( @Name, @Ingredients, @Price ); SELECT SCOPE_IDENTITY()";
             SqlCommand addproduct = new SqlCommand
@@ -98,7 +98,7 @@ namespace DAL
 
         public Product ByID(int id)
         {
-            using (SqlConnection conn = new SqlConnection(CS))
+            using (SqlConnection conn = new SqlConnection(cs_database.CS()))
             {
                 string query = "SELECT * FROM Product Where Id = @id";
 
@@ -133,7 +133,7 @@ namespace DAL
 
         public void DeleteProduct(Product product)
         {
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "Delete From Order Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", product.Id);
@@ -143,7 +143,7 @@ namespace DAL
 
         public void EditProduct(Product product)
         {
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "Update Product Set (Name = @Name, Ingredients = @Ingredients, Price =  @Price )Where Id = @Id";
             SqlCommand cmd = new SqlCommand
             {

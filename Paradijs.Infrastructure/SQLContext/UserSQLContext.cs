@@ -14,13 +14,7 @@ namespace DAL
     {
         #region Fields
 
-        //private string connectionstring()
-        //{
-        //    string _connectionstring = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\388227\Desktop\Paradijs\Paradijs\App_Data\Paradij_DB.mdf;Integrated Security=True";
-        //    return _connectionstring;
-        //}
-
-        public static string CS = ConfigurationManager.ConnectionStrings["LOCALDATABASE"].ConnectionString;
+        private CS_Databse cs_database =  new CS_Databse();
 
         #endregion
 
@@ -31,7 +25,7 @@ namespace DAL
 
         public bool IsEmailExists(User user)
         {
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
 
             try
             {
@@ -61,7 +55,7 @@ namespace DAL
         public User AddUser(User user)
         {
             var newuser = new User();
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open();
             string query = "INSERT INTO [User](FirstName, LastName, DateOfBirth, Adress, Postcode, City, EmailID, Mobile, Password, ConfirmPassword, IsEmailVerified, ActivationCode)" +
              " VALUES(@FirstName, @LastName, @DateOfBirth, @Adress, @Postcode, @City, @EmailID, @Mobile,  @Password, @ConfirmPassword, @IsEmailVerified, @ActivationCode)";
@@ -96,7 +90,7 @@ namespace DAL
 
         public bool IsActivationCodeExists(User user)
         {
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
 
             try
             {
@@ -128,7 +122,7 @@ namespace DAL
 
         public bool IsValidation(User user)
         {
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
 
             try
             {
@@ -160,7 +154,7 @@ namespace DAL
         // LogIn
         public User LogIn(User user)
         {
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             try
             {
                 con.Open();
@@ -201,7 +195,7 @@ namespace DAL
         {
 
             var model = new List<User>();
-            using (SqlConnection con = new SqlConnection(CS))
+            using (SqlConnection con = new SqlConnection(cs_database.CS()))
             {
                 con.Open();
                 SqlCommand cmd = new SqlCommand
@@ -237,7 +231,7 @@ namespace DAL
         public void DeleteUser(int id)
         {
             User user = new User();
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "Delete From [User] Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", id);
@@ -249,7 +243,7 @@ namespace DAL
         public void EditUser()
         {
             User user = new User();
-            SqlConnection con = new SqlConnection(CS);
+            SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "Update User Set (FirstName = @FirstName, LastName = @LastName, DateOfBirth = @DateOfBirth, Adress =  @Adress, Postcode = @Postcode, City = @City, Email = @Email, Mobile = @Mobile,  Password = @Password) Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
             cmd.Parameters.AddWithValue("@Id", user.Id);
@@ -268,7 +262,7 @@ namespace DAL
 
         public void SendMessage(Message Message)
         {
-            SqlConnection conn = new SqlConnection(CS);
+            SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
             SqlCommand cmd1 = new SqlCommand(
                 @"INSERT INTO [Message] ( SenderID, RecipientID, ProductID, Subject, Body) VALUES (@senderid, @recipientid, @productid, @subject, @body)", conn);
@@ -284,7 +278,7 @@ namespace DAL
         public List<ViewModelMessages> ViewAllMessages(User User)
         {
             List<ViewModelMessages> AllMessages = new List<ViewModelMessages>();
-            SqlConnection conn = new SqlConnection(CS);
+            SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
 
             SqlCommand cmd = new SqlCommand("ShowAllMessages", conn);
@@ -311,7 +305,7 @@ namespace DAL
         public List<Message> MessagesForOneProduct(User recipient, User sender, Product product)
         {
             List<Message> MessagesForOneProduct = new List<Message>();
-            SqlConnection conn = new SqlConnection(CS);
+            SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
             
             SqlCommand cmd = new SqlCommand("MessagesForOneProduct", conn);
@@ -344,7 +338,7 @@ namespace DAL
         {
             List<ViewModelMessages> AllMessages = new List<ViewModelMessages>();
             ViewModelMessages viewmodelmessage = new ViewModelMessages();
-            SqlConnection conn = new SqlConnection(CS);
+            SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
 
             SqlCommand cmd = new SqlCommand("MessageIndex", conn);
@@ -371,7 +365,7 @@ namespace DAL
         {
             List<ViewModelMessages> AllMessages = new List<ViewModelMessages>();
             ViewModelMessages viewmodelmessage = new ViewModelMessages();
-            SqlConnection conn = new SqlConnection(CS);
+            SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
 
             SqlCommand cmd = new SqlCommand("MessageSent", conn);
