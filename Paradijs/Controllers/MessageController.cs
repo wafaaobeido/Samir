@@ -10,22 +10,22 @@ namespace Samir.Web.Controllers
 {
     public class MessageController : Controller
     {
-        UserLogic ULogic = new UserLogic();
+        MessageLogic MLogic = new MessageLogic();
 
         [HttpGet]
         public ActionResult CreateMessage(int recipientid, int senderid, int productid)
         {
             Message Message = new Message();
-            Message.Recipient = recipientid;
-            Message.Sender = senderid;
-            Message.ProductID = productid;
+            Message.Recipient.Id = recipientid;
+            Message.Sender.Id = senderid;
+            Message.Product.Id = productid;
             return View(Message);
         }
 
         [HttpPost]
         public ActionResult CreateMessage(Message message)
         {
-            ULogic.SendMessage(message);
+            MLogic.SendMessage(message);
             return RedirectToAction("ViewProducts", "Product");
         }
 
@@ -33,7 +33,12 @@ namespace Samir.Web.Controllers
         {
             User user = new User();
             user.Id = id;
-            return View(ULogic.ViewAllMessages(user));
+            List<ViewModelMessages> messages = new List<ViewModelMessages>();
+            messages = MLogic.ViewAllMessages(user);
+            Session["Messages"] = messages;
+            string mes = "All messages";
+            ViewBag.Message = mes;
+            return View(messages);
 
         }
 
@@ -41,11 +46,11 @@ namespace Samir.Web.Controllers
         {
             User user = new User();
             user.Id = id;
-            foreach (var item in ULogic.ViewAllMessages(user))
+            foreach (var item in MLogic.ViewAllMessages(user))
             {
-                if (item.SenderID == user.Id)
+                if (item.Recipient.Id == user.Id)
                 {
-                    return View(ULogic.MessageSent(id));
+                    return View(MLogic.MessageSent(id));
                 }
             }
             return RedirectToAction("ViewAllMessages", "User");
@@ -54,11 +59,11 @@ namespace Samir.Web.Controllers
         {
             User user = new User();
             user.Id = id;
-            foreach (var item in ULogic.ViewAllMessages(user))
+            foreach (var item in MLogic.ViewAllMessages(user))
             {
-                if (item.SenderID != user.Id)
+                if (item.Sender.Id != user.Id)
                 {
-                    return View(ULogic.MessageInbox(id));
+                    return View(MLogic.MessageInbox(id));
                 }
             }
             return RedirectToAction("ViewAllMessages", "User");
@@ -72,7 +77,7 @@ namespace Samir.Web.Controllers
             product.Id = productid;
             recipient.Id = recipientid;
             sender.Id = senderid;
-            return View(ULogic.MessagesForOneProduct(recipient, sender, product));
+            return View(MLogic.MessagesForOneProduct(recipient, sender, product));
         }
 
     }

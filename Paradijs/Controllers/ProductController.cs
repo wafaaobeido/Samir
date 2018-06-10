@@ -19,6 +19,10 @@ namespace Samir.Web.Controllers
     {
         private ProductLogic pLogic = new ProductLogic();
 
+        //public ProductController (ProductLogic PL)
+        //{
+        //    this.pLogic = PL;
+        //}
         // GET: Product
         [HttpGet]
         public ActionResult AddProduct()

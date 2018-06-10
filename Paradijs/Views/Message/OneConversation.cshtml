@@ -24,7 +24,7 @@
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.SenderID)
+                @Html.DisplayNameFor(model => model.Sender)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Subject)
@@ -39,7 +39,7 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.SenderID)
+                @Html.DisplayFor(modelItem => item.Sender)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Subject)
@@ -52,6 +52,6 @@
     </table>
 
 
-    @Html.ActionLink("Bericht sturen", "CreateMessage", "Message", new { recipientid = Model.First().SenderID, senderid = user.Id, productid = Model.First().ProductID }, null)
+    @Html.ActionLink("Bericht sturen", "CreateMessage", "Message", new { recipientid = Model.First().Sender.Id, senderid = user.Id, productid = Model.First().Product.Id }, null)
 
 }

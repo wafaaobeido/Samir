@@ -43,6 +43,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageLogic.cs" />
+    <Compile Include="IUserLogic.cs" />
+    <Compile Include="MessageLogic.cs" />
     <Compile Include="OrderLogic.cs" />
     <Compile Include="ProductLogic.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

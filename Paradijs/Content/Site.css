@@ -9,6 +9,38 @@
     padding-right: 15px;
 }
 
+
+/*My CSS code*/
+
+.Product_Image {
+    width: calc(70% + 20px);
+    /*max-height: 50%;*/
+    height:200px;
+    object-fit: cover;
+    margin: -10px -10px 0 -10px;
+}
+.info h5{
+    font-size: 19px;
+    margin-bottom: 10px;
+}
+.Detail-image {
+    min-width: 300px;
+    margin: 30px;
+}
+.col-md-4{
+    margin-top:20px;
+}
+.title{
+    font-size: x-large;
+}
+.title-name{
+    font-size:xx-large;
+}
+.beschrijving{
+    font-size:large;
+}
+/*.........................*/
+
 /* Override the default bootstrap behavior where horizontal description lists 
    will truncate terms that are too long to fit in the left column 
 */

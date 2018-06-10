@@ -55,7 +55,7 @@ namespace DAL
         /// 
         public static User UserFromReader(SqlDataReader reader)
         {
-            //ProductSQLContext UContext = new ProductSQLContext();
+            
             User newuser = new User
             {
 
@@ -66,5 +66,26 @@ namespace DAL
 
             return newuser;
         }
+
+        /// <summary>
+        /// Populate an instance of <see cref="Message"/> from an <see cref="SqlDataReader"/>
+        /// </summary>
+        /// <param name="reader">The <see cref="SqlDataReader"/> containing a single record describing an <see cref="Message"/></param>
+        /// <returns>An instance of <see cref="Message"/> populated with all available properties</returns>
+        /// 
+        public static Message MessageFromReader(SqlDataReader reader)
+        {
+            
+            Message newmessage = new Message
+            {
+
+                Id = Convert.ToInt32(reader["Id"]),
+                Recipient = (User)reader["Recipient"],
+                Sender = (User)reader["Sender"]
+            };
+
+            return newmessage;
+        }
+
     }
 }

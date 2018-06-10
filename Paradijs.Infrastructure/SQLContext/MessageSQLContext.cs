@@ -7,24 +7,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Models;
 
-namespace DAL.SQLContext
+namespace DAL
 {
-    public class MessageSQLContext
+    public class MessageSQLContext : IMessage
     {
 
         #region
         private CS_Databse cs_database = new CS_Databse();
         #endregion
-
+        
         public void SendMessage(Message Message)
         {
             SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
             SqlCommand cmd1 = new SqlCommand(
                 @"INSERT INTO [Message] ( SenderID, RecipientID, ProductID, Subject, Body) VALUES (@senderid, @recipientid, @productid, @subject, @body)", conn);
-            cmd1.Parameters.AddWithValue("@recipientid", Message.Recipient);
-            cmd1.Parameters.AddWithValue("@senderid", Message.Sender);
-            cmd1.Parameters.AddWithValue("@productid", Message.ProductID);
+            cmd1.Parameters.AddWithValue("@recipientid", Message.Recipient.Id);
+            cmd1.Parameters.AddWithValue("@senderid", Message.Sender.Id);
+            cmd1.Parameters.AddWithValue("@productid", Message.Product);
             cmd1.Parameters.AddWithValue("@subject", Message.Subject);
             cmd1.Parameters.AddWithValue("@body", Message.Body);
             cmd1.ExecuteNonQuery();
@@ -47,10 +47,11 @@ namespace DAL.SQLContext
                 while (rdr.Read())
                 {
                     ViewModelMessages viewmodelmessage = new ViewModelMessages();
+                    //Message viewmodelmessage = new Message();
                     viewmodelmessage.NumberOfMessages = rdr.GetInt32(0);
-                    viewmodelmessage.SenderID = rdr.GetInt32(1);
-                    viewmodelmessage.Productid = rdr.GetInt32(2);
-                    viewmodelmessage.RecipientID = rdr.GetInt32(3);
+                    viewmodelmessage.Sender.Id = rdr.GetInt32(1);
+                    viewmodelmessage.Recipient.Id = rdr.GetInt32(2);
+                    viewmodelmessage.Product.Id = rdr.GetInt32(3);
                     AllMessages.Add(viewmodelmessage);
                 }
             }
@@ -76,9 +77,9 @@ namespace DAL.SQLContext
                 while (rdr.Read())
                 {
                     Message Message = new Message();
-                    Message.Recipient = rdr.GetInt32(0);
-                    Message.Sender = rdr.GetInt32(1);
-                    Message.ProductID = rdr.GetInt32(2);
+                    Message.Recipient.Id = rdr.GetInt32(0);
+                    Message.Sender.Id = rdr.GetInt32(1);
+                    Message.Product.Id = rdr.GetInt32(2);
                     Message.Subject = rdr.GetString(3);
                     Message.Body = rdr.GetString(4);
 
@@ -90,10 +91,11 @@ namespace DAL.SQLContext
         }
 
 
-        public List<ViewModelMessages> MessageIndex(int id)
+        public List<ViewModelMessages> MessageInbox(int id)
         {
             List<ViewModelMessages> AllMessages = new List<ViewModelMessages>();
             ViewModelMessages viewmodelmessage = new ViewModelMessages();
+            //Message viewmodelmessage = new Message();
             SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
 
@@ -107,9 +109,9 @@ namespace DAL.SQLContext
                 {
 
                     viewmodelmessage.NumberOfMessages = rdr.GetInt32(0);
-                    viewmodelmessage.SenderID = rdr.GetInt32(1);
-                    viewmodelmessage.Productid = rdr.GetInt32(2);
-                    viewmodelmessage.RecipientID = rdr.GetInt32(3);
+                    viewmodelmessage.Sender.Id = rdr.GetInt32(1);
+                    viewmodelmessage.Product.Id = rdr.GetInt32(2);
+                    viewmodelmessage.Recipient.Id = rdr.GetInt32(3);
                     AllMessages.Add(viewmodelmessage);
                 }
             }
@@ -121,6 +123,7 @@ namespace DAL.SQLContext
         {
             List<ViewModelMessages> AllMessages = new List<ViewModelMessages>();
             ViewModelMessages viewmodelmessage = new ViewModelMessages();
+            //Message viewmodelmessage = new Message();
             SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
 
@@ -134,9 +137,9 @@ namespace DAL.SQLContext
                 {
 
                     viewmodelmessage.NumberOfMessages = rdr.GetInt32(0);
-                    viewmodelmessage.SenderID = rdr.GetInt32(1);
-                    viewmodelmessage.Productid = rdr.GetInt32(2);
-                    viewmodelmessage.RecipientID = rdr.GetInt32(3);
+                    viewmodelmessage.Sender.Id = rdr.GetInt32(1);
+                    viewmodelmessage.Product.Id = rdr.GetInt32(2);
+                    viewmodelmessage.Recipient.Id = rdr.GetInt32(3);
                     AllMessages.Add(viewmodelmessage);
                 }
             }
@@ -145,6 +148,7 @@ namespace DAL.SQLContext
 
 
         }
+
 
     }
 }

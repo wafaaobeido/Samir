@@ -8,7 +8,7 @@
 @{
     var user = Session["User"] as User;
 }
-
+<link href="~/Content/Site.css" rel="stylesheet" />
 <div>
     <h4>Gerechten</h4>
 
@@ -18,85 +18,27 @@
             @Html.ActionLink("Voeg nieuwe gerecht toe...", "AddProduct", "Product")
         </p>
         <hr />
-        foreach (var product in Model)
-        {
-
-            <div class="col-sm-3">
-                <div class="col-item">
-                    <div class="photo">
-                        <img src="@Url.Content(product.Picture[0])" alt="Foto van dit object" />
-                    </div>
-                    <div class="info">
-                        <div class="row">
-                            <div class="price col-md-6">
-                                <h5>
-                                    @product.Name
-                                </h5>
-                                <h5 class="price-text-color">
-                                    @product.Price
-                                </h5>
-                            </div>
-                            <div class="rating hidden-sm col-md-6">
-                                <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                </i><i class="fa fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="separator clear-left">
-                            <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">Add to cart</a>
-                            </p>
-                            <p>
-                                @Html.ActionLink("More details", "ViewProductDetails", new { id = product.Id })
-                            </p>
-                        </div>
-                        <div class="clearfix">
-                        </div>
-                    </div>
-                </div>
+        <div class="container">
+            <div class="row">
+                @foreach (var product in Model)
+                {
+                    @Html.Partial("_Products", product)
+                }
             </div>
-        }
+        </div>
     }
     else
     {
         <hr />
-        foreach (var product in Model)
-        {
-            <div class="col-sm-3">
-                <div class="col-item">
-                    <div class="photo">
-                        <img src="@Url.Content(product.Picture[0])" alt="Foto van dit object" />
-                    </div>
-                    <div class="info">
-                        <div class="row">
-                            <div class="price col-md-6">
-                                <h5>
-                                    @product.Name
-                                </h5>
-                                <h5 class="price-text-color">
-                                    @product.Price
-                                </h5>
-                            </div>
-                            <div class="rating hidden-sm col-md-6">
-                                <i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                </i><i class="price-text-color fa fa-star"></i><i class="price-text-color fa fa-star">
-                                </i><i class="fa fa-star"></i>
-                            </div>
-                        </div>
-                        <div class="separator clear-left">
-                            <p class="btn-add">
-                                <i class="fa fa-shopping-cart"></i><a href="http://www.jquery2dotnet.com" class="hidden-sm">Add to cart</a>
-                            </p>
-                            <p class="btn-details">
-                                @Html.ActionLink("More details", "ViewProductDetails", new { id = product.Id })
-                            </p>
-                        </div>
-                        <div class="clearfix">
-                        </div>
-                    </div>
-                </div>
+        
+        <div class="container">
+            <div class="row">
+                @foreach (var product in Model)
+                {
+                    @Html.Partial("_Products", product)
+                }
             </div>
-        }
+        </div>
     }
 
 </div>

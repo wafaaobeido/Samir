@@ -17,47 +17,61 @@
 else
 {
 
+    <h2>Details</h2>
 
-        <h2>Details</h2>
+    <div>
+        <h4>Product</h4>
+        <hr />
+        <table style="font-family: Arial; width:300px">
+            <tr>
+                <td>
+                    <div class="slideshow-container ">
+                        <!--`????????CSS toepassen, Unit testing, Add Order page beter makem, de header verbeterens-->
+                        <!-- Full-width images with number and caption text -->
+                        @for (int i = 0; i < Model.Picture.Count; i++)
+                        {
+                            <div class="w3-content w3-display-container">
+                                <div class="w3-display-container mySlides Detail-image">
+                                    <img src="@Url.Content(Model.Picture[i])" alt="Foto van dit object" style="width:100%" />
+                                </div>
+                            </div>
+                        }
+                        <div>
+                            <button class="w3-button w3-display-left w3-black" onclick="plusDivs(-1)">&#10094;</button>
+                            <button class="w3-button w3-display-right w3-black" onclick="plusDivs(1)">&#10095;</button>
+                        </div>
+                    </div>
+                    <script src="~/Scripts/ScriptFile/Site.js"></script>
+                </td>
+                <td>
+                    <table class="info-tabel">
+                        <tr>
+                            <td class="title-name"> @Model.Name</td>
+                        </tr>
+                        <tr>
+                            <td class="title">Ingredients :<br /></td> 
+                            <td class="beschrijving">@Model.Ingredients</td> 
+                        </tr>
+                        <tr>
+                            <td class="title">Price :<br /></td>
+                            <td class="beschrijving">@Model.Price</td> 
+                        </tr>
+                        <tr>
+                            <td>
+                                @if (user != null && user.Email != "samirobeido76@gmail.com")
+                                {
+                                    <p>
+                                        @Html.ActionLink("Order", "AddOrder", "Order", new { id = product.Id, userid = user.Id, hostid = 8 }, null)
+                                    </p>
+                                }
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
 
-        <div>
-            <h4>Product</h4>
-            <hr />
-            <dl class="dl-horizontal">
-                <dd>
-                    @for (int i = 0; i < Model.Picture.Count; i++)
-                    {
-                        <img src="@Url.Content(Model.Picture[i])" alt="Foto van dit object" />
-                    }
-                </dd>
-                <dt>
-                    @Html.DisplayNameFor(model => model.Name)
-                </dt>
-
-                <dd>
-                    @Model.Name                </dd>
-
-                <dt>
-                    @Html.DisplayNameFor(model => model.Ingredients)
-                </dt>
-
-                <dd>
-                    @Model.Ingredients
-                </dd>
-            </dl>
-        </div>
-    
-
-    if (user.Email != "samirobeido76@gmail.com")
-    {
-        <p>
-            @Html.ActionLink("Order", "AddOrder", "Order", new { id = product.Id, userid = user.Id, hostid = 8 }, null)
-        </p>
-    }
-    else
-    {
-
-    }
+    </div>
 }
 
 

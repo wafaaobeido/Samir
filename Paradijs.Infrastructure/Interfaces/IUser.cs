@@ -10,6 +10,7 @@ namespace DAL
     public interface IUser
     {
         bool IsEmailExists(User user);
+        bool Checkaccount(User user);
         User AddUser(User user);
         bool IsActivationCodeExists(User user);
         bool IsValidation(User user);
@@ -20,9 +21,9 @@ namespace DAL
 
         void SendMessage(Message Message);
 
-        List<ViewModelMessages> ViewAllMessages(User User);
+        List<Message> ViewAllMessages(User User);
         List<Message> MessagesForOneProduct(User recipient, User sender, Product product);
-        List<ViewModelMessages> MessageIndex(int id);
-        List<ViewModelMessages> MessageSent(int id);
+        List<Message> MessageIndex(int id);
+        List<Message> MessageSent(int id);
     }
 }

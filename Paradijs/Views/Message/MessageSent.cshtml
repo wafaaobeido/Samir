@@ -37,7 +37,7 @@
             @Html.DisplayNameFor(model => model.Productid)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RecipientID)
+            @Html.DisplayNameFor(model => model.Recipient)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.NumberOfMessages)
@@ -53,13 +53,13 @@
                 @Html.DisplayFor(modelItem => item.Productid)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RecipientID)
+                @Html.DisplayFor(modelItem => item.Recipient)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NumberOfMessages)
             </td>
             <td>
-                @Html.ActionLink("Details", "OneConversation", "Message", new { recipientid = item.RecipientID, senderid = item.SenderID, productid = item.Productid }, null)
+                @Html.ActionLink("Details", "OneConversation", "Message", new { recipientid = item.Recipient, senderid = item.Sender, productid = item.Productid }, null)
             </td>
         </tr>
     }

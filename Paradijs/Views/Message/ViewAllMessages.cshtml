@@ -15,6 +15,7 @@
     else
     {*@
 @{
+    
     var user = Session["User"] as User;
 }
 @if (user != null)
@@ -30,18 +31,18 @@
 
         @Html.ActionLink("Sent", "MessageSent", "Message", new { id = user.Id }, null)
     </div>
-    <h2>AllMessages</h2>
+    <h2>@ViewBag.Message</h2>
 
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Productid)
+                @Html.DisplayNameFor(model => model.Product.Id)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.SenderID)
+                @Html.DisplayNameFor(model => model.Sender.Email)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.RecipientID)
+                @Html.DisplayNameFor(model => model.Recipient.Email)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.NumberOfMessages)
@@ -53,19 +54,19 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Productid)
+                    @Html.DisplayFor(modelItem => item.Product.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.SenderID)
+                    @Html.DisplayFor(modelItem => item.Sender.Email)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.RecipientID)
+                    @Html.DisplayFor(modelItem => item.Recipient.Email)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NumberOfMessages)
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "OneConversation", "Message", new { recipientid = item.RecipientID, senderid = item.SenderID, productid = item.Productid }, null)
+                    @Html.ActionLink("Details", "OneConversation", "Message", new { recipientid = item.Recipient.Id, senderid = item.Sender.Id, productid = item.Product.Id }, null)
                 </td>
             </tr>
         }

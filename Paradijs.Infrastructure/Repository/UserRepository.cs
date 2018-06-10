@@ -7,9 +7,9 @@ using Models;
 
 namespace DAL
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        private IUser context;
+        public IUser context;
 
         public UserRepository(IUser context)
         {
@@ -19,13 +19,17 @@ namespace DAL
         {
             return context.AddUser(user);
         }
-        public User LogIn (User user)
+        public virtual User LogIn (User user)
         {
             return context.LogIn(user);
         }
         public bool CheckEmail(User user)
         {
             return context.IsEmailExists(user);
+        }
+        public bool Checkaccount(User user)
+        {
+            return context.Checkaccount(user);
         }
         public bool CheckActivationCode(User user)
         {
@@ -49,7 +53,7 @@ namespace DAL
             context.SendMessage(Message);
         }
 
-        public List<ViewModelMessages> ViewAllMessages(User User)
+        public List<Message> ViewAllMessages(User User)
         {
             return context.ViewAllMessages(User);
         }
@@ -57,11 +61,11 @@ namespace DAL
         {
             return context.MessagesForOneProduct(recipient, sender, product);
         }
-        public List<ViewModelMessages> MessageIndex(int id)
+        public List<Message> MessageIndex(int id)
         {
             return context.MessageIndex(id);
         }
-        public List<ViewModelMessages> MessageSent(int id)
+        public List<Message> MessageSent(int id)
         {
             return context.MessageSent(id);
         }

@@ -202,6 +202,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\ScriptFile\Site.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -235,6 +236,7 @@
     <Content Include="Views\Message\MessageInbox.cshtml" />
     <Content Include="Views\Order\MyOrders.cshtml" />
     <Content Include="Views\Order\OrdersByUser.cshtml" />
+    <Content Include="Views\Shared\_Products.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Images\" />
@@ -261,6 +263,10 @@
     <ProjectReference Include="..\Paradijs.Core\Models.csproj">
       <Project>{9a3a6f56-f283-4c15-8057-f3f201bae145}</Project>
       <Name>Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Paradijs.Infrastructure\DAL.csproj">
+      <Project>{72032e61-bc3c-4fe4-b63e-deaa3d3d8722}</Project>
+      <Name>DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -40,6 +40,7 @@ else
                     @Html.ValidationMessageFor(model => model.product.Name, "", new { @class = "text-danger" })
                 </div>
             </div>
+            <input name="Quantity" type="number" min="1" max="10" step="1" />
             <div class="form-group">
                 @Html.LabelFor(model => model.User.FirstName, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -53,13 +54,13 @@ else
                     @Html.ValidationMessageFor(model => model.verkoper.FirstName, "", new { @class = "text-danger" })
                 </div>
             </div>
-            @*<div class="form-group">
+            <div class="form-group">
                 @Html.LabelFor(model => model.User.Adress, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.EditorFor(model => model.User.Adress, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     @Html.ValidationMessageFor(model => model.User.Adress, "", new { @class = "text-danger" })
                 </div>
-            </div>*@
+            </div>
             <div class="form-group">
                 @Html.LabelFor(model => model.Ordertime, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
@@ -76,90 +77,45 @@ else
             </div>
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="Create" class="btn btn-default" />
+                    <input type="submit" value="Maak order" class="btn btn-default" />
                 </div>
             </div>
+            @Html.Hidden("User.Id", Model.User.Id)
+            @Html.Hidden("verkoper.Id", Model.verkoper.Id)
+            @Html.Hidden("product.Id", Model.product.Id)
 
-            <!-- #region identifiers -->
-
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.User.Id, htmlAttributes: new { @class = "control-label col-md-2", @hidden = "hidden" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.User.Id, new { htmlAttributes = new { @class = "form-control", @hidden = "hidden" } })
-                    @Html.ValidationMessageFor(model => model.User.Id, "", new { @class = "text-danger" })
-                </div>
-            </div>            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.verkoper.Id, htmlAttributes: new { @class = "control-label col-md-2", @hidden = "hidden" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.verkoper.Id, new { htmlAttributes = new { @class = "form-control", @hidden = "hidden" } })
-                    @Html.ValidationMessageFor(model => model.verkoper.Id, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
-                @Html.LabelFor(model => model.product.Id, htmlAttributes: new { @class = "control-label col-md-2", @hidden = "hidden" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.product.Id, new { htmlAttributes = new { @class = "form-control", @hidden = "hidden" } })
-                    @Html.ValidationMessageFor(model => model.product.Id, "", new { @class = "text-danger" })
-                </div>
-            </div>
-            <!-- #endregion -->
         </div>
     }
 
-    if (Model != null)
+   @* if (Model != null)
     {
-    @*ToDo*@
-    <div class="slider-contract">
-        <div class="preview col-md-6">
+        @*ToDo
+        <div class="slider-contract">
+            <div class="preview col-md-6">
 
-            <div class="preview-pic tab-content">
-                <div class="slideshow-container">
-                    <!-- Full-width images with number and caption text -->
-                    @for (int i = 0; i < Model.product.Picture.Count; i++)
-                    {
-                        <div class="w3-content w3-display-container">
+                <div class="preview-pic tab-content">
+                    <div class="slideshow-container">
+                        <!-- Full-width images with number and caption text -->
+                        @for (int i = 0; i < Model.product.Picture.Count; i++)
+                        {
+                            <div class="w3-content w3-display-container">
 
-                            <div class="w3-display-container mySlides">
-                                <img class="estate-image" src="@Url.Content(Model.product.Picture[i])" style="width:100%">
+                                <div class="w3-display-container mySlides">
+                                    <img class="estate-image" src="@Url.Content(Model.product.Picture[i])" style="width:100%">
+                                </div>
                             </div>
-                        </div>
-                        <button class="w3-button w3-display-left w3-black" onclick="plusDivs(-1)">&#10094;</button>
-                        <button class="w3-button w3-display-right w3-black" onclick="plusDivs(1)">&#10095;</button>
-
-                        <script>
-                            var slideIndex = 1;
-                            showDivs(slideIndex);
-
-                            function plusDivs(n) {
-                                showDivs(slideIndex += n);
-                            }
-
-                            function showDivs(n) {
-                                var i;
-                                var x = document.getElementsByClassName("mySlides");
-                                if (n > x.length) { slideIndex = 1 }
-                                if (n < 1) { slideIndex = x.length }
-                                for (i = 0; i < x.length; i++) {
-                                    x[i].style.display = "none";
-                                }
-                                x[slideIndex - 1].style.display = "block";
-                            }
-                        </script>
-                    }
+                            <button class="w3-button w3-display-left w3-black" onclick="plusDivs(-1)">&#10094;</button>
+                            <button class="w3-button w3-display-right w3-black" onclick="plusDivs(1)">&#10095;</button>
+                        }
+                    </div>
+                    <script src="~/Scripts/ScriptFile/Site.js"></script>
                 </div>
-                <script src="~/Scripts/ScriptFile/Site.js"></script>
             </div>
         </div>
-    </div>
-        }
-
     }
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+*@
+
+}
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

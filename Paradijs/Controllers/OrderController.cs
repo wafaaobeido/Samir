@@ -25,14 +25,13 @@ namespace Samir.Web.Controllers
         {
             var clientID = Request.Form["User.Id"];
             var hostID = Request.Form["Verkoper.Id"];
+            var quantity = Request.Params["Quantity"];
 
-            // quantity bepalen
-            int qua = 0;
             string message = "";
 
             Product product = PLogic.ByID(Convert.ToInt32(id));
-            message = OLogic.AddOrder(Convert.ToInt32(clientID), Convert.ToInt32(hostID), Convert.ToInt32(id), qua) +
-                OLogic.KoppelTabelOrder(Convert.ToInt32(clientID), Convert.ToInt32(hostID), Convert.ToInt32(id), qua);
+            message = OLogic.AddOrder(Convert.ToInt32(clientID), Convert.ToInt32(hostID), Convert.ToInt32(id), Convert.ToInt32(quantity)) +
+                OLogic.KoppelTabelOrder(Convert.ToInt32(clientID), Convert.ToInt32(hostID), Convert.ToInt32(id), Convert.ToInt32(quantity));
 
             if (message == "succes")
             {

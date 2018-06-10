@@ -12,13 +12,17 @@ using Models;
 
 namespace BLL
 {
-    public class UserLogic
+    public class UserLogic : IUserLogic
     {
         public UserRepository repo = new UserRepository(new UserSQLContext());
 
         public bool CheckEmail(User user)
         {
             return repo.CheckEmail(user);
+        }
+        public bool Checkaccount(User user)
+        {
+            return repo.Checkaccount(user);
         }
         public User AddUser(User user)
         {
@@ -32,7 +36,7 @@ namespace BLL
         {
             return repo.IsValidation(user);
         }
-        public User LogIn(User user)
+        public virtual User LogIn(User user)
         {
             return repo.LogIn(user);
         }
@@ -101,7 +105,7 @@ namespace BLL
             repo.SendMessage(Message);
         }
 
-        public List<ViewModelMessages> ViewAllMessages(User User)
+        public List<Message> ViewAllMessages(User User)
         {
             return repo.ViewAllMessages(User);
         }
@@ -109,11 +113,11 @@ namespace BLL
         {
             return repo.MessagesForOneProduct(recipient, sender, product);
         }
-        public List<ViewModelMessages> MessageInbox(int id)
+        public List<Message> MessageInbox(int id)
         {
             return repo.MessageIndex(id);
         }
-        public List<ViewModelMessages> MessageSent(int id)
+        public List<Message> MessageSent(int id)
         {
             return repo.MessageSent(id);
         }

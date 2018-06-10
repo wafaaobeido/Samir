@@ -12,11 +12,9 @@ namespace DAL
 {
     public class ProductSQLContext : IProduct
     {
-        #region Fields
 
         private CS_Databse cs_database = new CS_Databse();
 
-        #endregion
 
         #region methodes
 

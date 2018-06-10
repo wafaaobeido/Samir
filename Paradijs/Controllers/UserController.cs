@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Models;
 using BLL;
+
 using System.Net;
 using System.Net.Mail;
 using System.Web;
@@ -15,7 +16,17 @@ namespace Samir.Controllers
     public class UserController : Controller
     {
 
-        private UserLogic ULogic = new UserLogic();
+        private IUserLogic ULogic;
+
+
+        public UserController(IUserLogic ulogic)
+        {
+            this.ULogic = ulogic;
+        }
+        public UserController()
+        {
+            this.ULogic = new UserLogic();
+        }
 
         /* Registration Action */
 
@@ -106,26 +117,39 @@ namespace Samir.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(User user)
+        public ViewResult Login(User user)
         {
             string message = "";
-            user = ULogic.LogIn(user);
-            if (user.IsEmailVerified == true)
+            bool Status = false;
+            
+
+            if (ULogic.Checkaccount(user))
             {
-                if (user.Email != "" && Session["Useremail"] == null)
+                user = ULogic.LogIn(user);
+                if (user.IsEmailVerified == true)
                 {
+                    message = "U bent ingelogd";
                     Response.Cookies.Add(ULogic.RememberMe(user));
                     Session["Useremail"] = user.Email;
                     Session["User"] = user;
-                    ModelState.Clear();
-                    return RedirectToAction("ViewProducts", "Product");
+                    ViewBag.Message = message;
+                    ViewBag.Status = true;
+                    return View("ViewProducts", "Product");
                 }
+                message = "U account is nog niet geverifieerd, verifieer u account alstublieft en probeer nog en keer";
 
+                ViewBag.Status = false;
                 ViewBag.Message = message;
                 ModelState.Clear();
                 return View();
             }
-            return RedirectToAction("Login");
+            message = "De gebruikersnaam of wachtwoord is niet juist, controleer uw gegevens alstublieft en probeer nog en keer";
+
+
+            ViewBag.Status = false;
+            ViewBag.Message = message;
+            ModelState.Clear();
+            return View();
         }
 
         /* Logout */
@@ -159,5 +183,11 @@ namespace Samir.Controllers
             return RedirectToAction("AllUsers", "User");
         }
 
+        public int testm()
+        {
+            int i = 1;
+            int o = 1;
+            return i + o;
+        }
     }
 }

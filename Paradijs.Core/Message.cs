@@ -11,10 +11,18 @@ namespace Models
     {
         public int Id { get; set; }
         // change to user 
-        public int Sender { get; set; }
-        public int Recipient { get; set; }
-        public int ProductID { get; set; }
+        public User Sender { get; set; }
+        public User Recipient { get; set; }
+        public Product Product { get; set; }
         public string Subject { get; set; }
         public string Body { get; set; }
+        public int NumberOfMessages { get; set; }
+
+        public Message()
+        {
+            Sender = new User();
+            Recipient = new User();
+            Product = new Product();
+        }
     }
 }

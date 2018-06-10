@@ -9,7 +9,7 @@ namespace Samir.Web.Controllers
 {
     public class ImageController : Controller
     {
-        private ImageLogic ILogic;
+        private ImageLogic ILogic = new ImageLogic();
 
         // GET: Image
         [HttpGet]
