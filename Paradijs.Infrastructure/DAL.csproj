@@ -43,13 +43,14 @@
   <ItemGroup>
     <Compile Include="CS_Databse.cs" />
     <Compile Include="Interfaces\IOrder.cs" />
-    <Compile Include="Repository\IUserRepository.cs" />
+    <Compile Include="RepositoryType.cs" />
+    <Compile Include="Repository\ImageRepository.cs" />
     <Compile Include="Repository\MessageRepository.cs" />
     <Compile Include="Repository\OrderRepository.cs" />
     <Compile Include="Interfaces\IMessage.cs" />
     <Compile Include="SQLContext\MessageSQLContext.cs" />
+    <Compile Include="UserMemoryContext.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="Repository\ImageRepository.cs" />
     <Compile Include="Interfaces\IImage.cs" />
     <Compile Include="SQLContext\ImageSQLContext.cs" />
     <Compile Include="Interfaces\IProduct.cs" />

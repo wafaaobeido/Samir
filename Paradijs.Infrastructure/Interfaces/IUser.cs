@@ -19,11 +19,5 @@ namespace DAL
         void DeleteUser(int id);
         void EditUser();
 
-        void SendMessage(Message Message);
-
-        List<Message> ViewAllMessages(User User);
-        List<Message> MessagesForOneProduct(User recipient, User sender, Product product);
-        List<Message> MessageIndex(int id);
-        List<Message> MessageSent(int id);
     }
 }

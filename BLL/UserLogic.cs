@@ -12,9 +12,9 @@ using Models;
 
 namespace BLL
 {
-    public class UserLogic : IUserLogic
+    public class UserLogic
     {
-        public UserRepository repo = new UserRepository(new UserSQLContext());
+        public UserRepository repo = new UserRepository(RepositoryType.Geheugen);
 
         public bool CheckEmail(User user)
         {
@@ -100,26 +100,5 @@ namespace BLL
             user.IsEmailVerified = false;
         }
 
-        public void SendMessage(Message Message)
-        {
-            repo.SendMessage(Message);
-        }
-
-        public List<Message> ViewAllMessages(User User)
-        {
-            return repo.ViewAllMessages(User);
-        }
-        public List<Message> MessagesForOneProduct(User recipient, User sender, Product product)
-        {
-            return repo.MessagesForOneProduct(recipient, sender, product);
-        }
-        public List<Message> MessageInbox(int id)
-        {
-            return repo.MessageIndex(id);
-        }
-        public List<Message> MessageSent(int id)
-        {
-            return repo.MessageSent(id);
-        }
     }
 }

@@ -365,7 +365,6 @@ namespace DAL
             return MessagesForOneProduct;
         }
 
-
         public List<Message> MessageIndex(int id)
         {
             List<Message> AllMessages = new List<Message>();

@@ -7,7 +7,7 @@ using System.Web;
 
 namespace Models
 {
-    public class User
+    public class User : IComparable<User>
     {
         #region Properties
 
@@ -66,7 +66,16 @@ namespace Models
 
         #endregion
 
+        public class UserNietGevondenException : Exception { }
 
+        public int CompareTo(User other)
+        {
+            if (other != null)
+            {
+                return this.Email.CompareTo(other.Email);
+            }
+            return 1; // 1 betekent "groter dan"; we zijn "groter dan" null.
+        }
 
     }
 }

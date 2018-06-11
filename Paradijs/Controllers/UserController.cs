@@ -16,13 +16,9 @@ namespace Samir.Controllers
     public class UserController : Controller
     {
 
-        private IUserLogic ULogic;
+        private UserLogic ULogic ;
 
 
-        public UserController(IUserLogic ulogic)
-        {
-            this.ULogic = ulogic;
-        }
         public UserController()
         {
             this.ULogic = new UserLogic();
@@ -189,5 +185,8 @@ namespace Samir.Controllers
             int o = 1;
             return i + o;
         }
+
+        
+
     }
 }
