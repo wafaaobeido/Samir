@@ -30,7 +30,7 @@ namespace DAL
         }
         public List<Order> ShowOrder(int id)
         {
-            return context.ShowOrders(id);
+            return context.ShowOrdersForUser(id);
         }
         public void StandardMessage(int UserHostID, int UserRecipientID, string messages, string Subject, int ProductID)
         {
@@ -38,7 +38,11 @@ namespace DAL
         }
         public List<Order> OrdersByUsers()
         {
-            return context.OrdersByUsers();
+            return context.SortOrdersByUsers();
+        }
+        public List<Order> AllOrders()
+        {
+            return context.AllOrders();
         }
     }
 }

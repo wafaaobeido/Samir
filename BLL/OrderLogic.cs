@@ -38,5 +38,9 @@ namespace BLL
         {
             return repo.OrdersByUsers();
         }
+        public List<Order> AllOrders()
+        {
+            return repo.AllOrders();
+        }
     }
 }

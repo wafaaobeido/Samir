@@ -12,9 +12,9 @@ using Models;
 
 namespace BLL
 {
-    public class UserLogic
+    public class UserLogic : IUserLogic
     {
-        public UserRepository repo = new UserRepository(RepositoryType.Geheugen);
+        public UserRepository repo = new UserRepository(RepositoryType.Database);
 
         public bool CheckEmail(User user)
         {

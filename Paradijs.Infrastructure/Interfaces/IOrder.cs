@@ -14,8 +14,9 @@ namespace DAL
         void StandardMessage(int UserHostID, int UserRecipientID, string messages, string Subject, int ProductID);
         string AddOrder(int Klantid, int Verkoperid, int Productid, int Quantity);
         string KoppelTabelOrder(int Klantid, int Verkoperid, int Productid, int quantity);
-        List<Order> ShowOrders(int id);
-        List<Order> OrdersByUsers();
+        List<Order> ShowOrdersForUser(int id);
+        List<Order> AllOrders();
+        List<Order> SortOrdersByUsers();
         void DeleteOrder();
         void EditOrder();
     }

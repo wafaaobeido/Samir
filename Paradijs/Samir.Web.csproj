@@ -226,7 +226,7 @@
     <Content Include="Views\User\Registration.cshtml" />
     <Content Include="Views\User\VerifyAccount.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
-    <Content Include="Views\User\AllUsers.cshtml" />
+    <Content Include="Views\Order\AllUsers.cshtml" />
     <Content Include="Views\Product\MyProducts.cshtml" />
     <Content Include="Views\Order\AddOrder.cshtml" />
     <Content Include="Views\Message\CreateMessage.cshtml" />

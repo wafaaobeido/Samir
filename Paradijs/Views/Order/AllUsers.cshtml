@@ -23,6 +23,7 @@
                     <th scope="col">Mobile</th>
                     <th scope="col">Postcode</th>
                     <th scope="col">Adres</th>
+                    <th scope="col">Aantal bestellingen</th>
                 </tr>
             </thead>
             @foreach (var user in Model)
@@ -32,20 +33,25 @@
                         <td>@user.FirstName</td>
                         <td>@user.LastName</td>
                         <td>@user.Email</td>
-                        <td>@user.DateOfBirth</td>
+                        <td>@user.DateOfBirth.ToString("dd/MM/yyyy")</td>
                         <td>@user.Mobile</td>
                         <td>@user.Postcode</td>
                         <td>@user.Adress @user.City</td>
+                        @if (user.Order.Id == 0)
+                        {
+                            <td> - </td>
+                        }
+                        else
+                        {
+                            <td>@user.Order.Id    @if (user.Order.User.Id != 0) {@Html.ActionLink("Details", "MyOrders", "Order", new { id = user.Order.User.Id }, null)}</td>
+                        }
+
                         <td>@Html.ActionLink("Delete", "DeleteUser", new { id = user.Id, controller = "User" })</td>
                     </tr>
-                   
+
                 </tbody>
             }
         </table>
     </center>
 
 </div>
-<p>
-    @*@Html.ActionLink("Edit", "Edit", new { id = user.Id }) |*@
-    @Html.ActionLink("Back to List", "Index")
-</p>

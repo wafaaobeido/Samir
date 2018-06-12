@@ -14,7 +14,7 @@ namespace DAL
     {
         #region Fields
 
-        private CS_Databse cs_database =  new CS_Databse();
+        private CS_Databse cs_database = new CS_Databse();
 
         #endregion
 
@@ -87,7 +87,6 @@ namespace DAL
             con.Close();
             return newuser;
         }
-
         public bool IsActivationCodeExists(User user)
         {
             SqlConnection con = new SqlConnection(cs_database.CS());
@@ -119,7 +118,6 @@ namespace DAL
 
 
         }
-
         public bool IsValidation(User user)
         {
             SqlConnection con = new SqlConnection(cs_database.CS());
@@ -188,7 +186,6 @@ namespace DAL
             }
 
         }
-
         public bool Checkaccount(User user)
         {
             SqlConnection con = new SqlConnection(cs_database.CS());
@@ -233,26 +230,25 @@ namespace DAL
                 {
                     Connection = con,
                     CommandType = CommandType.StoredProcedure,
-                    CommandText = "AllUsers",
-                    Parameters =
-                    {
-                new SqlParameter("@Email", "samirobeido76@gmail.com")
-                    }
+                    CommandText = "AllUsers"
+                   
                 };
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
-                    var u = new User();
-                    u.Id = Convert.ToInt32(reader["Id"]);
-                    u.FirstName = (string)reader["FirstName"];
-                    u.LastName = (string)reader["LastName"];
-                    u.Postcode = (string)reader["Postcode"];
-                    u.Email = (string)reader["EmailID"];
-                    u.Mobile = Convert.ToInt32(reader["Mobile"]);
-                    u.DateOfBirth = Convert.ToDateTime(reader["DateOfBirth"]);
-                    u.Adress = (string)reader["Adress"];
-                    u.City = (string)reader["City"];
-                    u.IsEmailVerified = (bool)reader["IsEmailVerified"];
+                    Order o = new Order();
+                    var u = new User(o);
+                    o.Id = reader.GetInt32(0);
+                    u.FirstName = reader.GetString(1);
+                    u.LastName = reader.GetString(2);
+                    u.Mobile = reader.GetInt32(3);
+                    u.DateOfBirth = reader.GetDateTime(4);
+                    u.Email = reader.GetString(5);
+                    u.Adress = reader.GetString(6);
+                    u.Postcode = reader.GetString(7);
+                    u.City = reader.GetString(8);
+                   // o.User.Id = reader.GetInt32(9);
+                   if(reader["UserId"] != DBNull.Value) o.User.Id =  reader.GetInt32(9);
 
                     model.Add(u);
                 }
@@ -339,7 +335,7 @@ namespace DAL
             List<Message> MessagesForOneProduct = new List<Message>();
             SqlConnection conn = new SqlConnection(cs_database.CS());
             conn.Open();
-            
+
             SqlCommand cmd = new SqlCommand("MessagesForOneProduct", conn);
             cmd.CommandType = CommandType.StoredProcedure;
 
@@ -357,7 +353,7 @@ namespace DAL
                     Message.Product.Id = rdr.GetInt32(2);
                     Message.Subject = rdr.GetString(3);
                     Message.Body = rdr.GetString(4);
-              
+
                     MessagesForOneProduct.Add(Message);
                 }
             }

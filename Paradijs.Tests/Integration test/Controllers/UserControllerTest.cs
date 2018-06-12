@@ -71,7 +71,7 @@ namespace Samir.Tests.Controllers
             bool expected = ULogic.IsValidation(user);
 
             // Assert
-            Assert.AreNotEqual(expected = true, actual);
+            Assert.AreNotEqual(expected, actual);
         }
 
 

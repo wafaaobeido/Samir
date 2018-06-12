@@ -76,7 +76,6 @@ namespace DAL
             return o;
         }
 
-
         public string AddOrder(int Klantid, int Verkoperid, int Productid, int quantity)
         {
             SqlConnection con = new SqlConnection(cs_database.CS());
@@ -133,11 +132,10 @@ namespace DAL
 
             return message;
         }
-        public List<Order> ShowOrders(int id)
+        public List<Order> ShowOrdersForUser(int id)
         {
             SqlConnection con = new SqlConnection(cs_database.CS());
-            string message = "";
-            string qry = "Select Name, Price, OrderTime, DeliveryTime " +
+            string qry = "Select [Product].Name, [Product].Price, [Order].OrderTime, [Order].DeliveryTime " +
                          "from [Order_Product] " +
                          "INNER JOIN [Order] On [Order].Id = [Order_Product].OrderId " +
                          "INNER JOIN [Product] On [Product].Id = [Order_Product].ProductId " +
@@ -151,19 +149,38 @@ namespace DAL
                 while (rdr.Read())
                 {
                     var o = new Order();
-                    o.product.Name = (string)rdr["Name"];
+                    o.product.Name = rdr.GetString(0);
                     o.product.Price = Convert.ToDouble(rdr["Price"]);
-                    o.Ordertime = Convert.ToDateTime(rdr["Ordertime"]);
-                    o.DeliveryTime = Convert.ToDateTime(rdr["DeliveryTime"]);
+                    o.Ordertime = rdr.GetDateTime(2);
+                    o.DeliveryTime = rdr.GetDateTime(3);
                     model.Add(o);
                 }
             }
             con.Close();
-            message = "succes";
 
             return model;
         }
+        public List<Order> AllOrders()
+        {
+            SqlConnection con = new SqlConnection(cs_database.CS());
+            string qry = "Select * From [Order] ";
+            con.Open();
+            SqlCommand cmd = new SqlCommand(qry, con);
+            var model = new List<Order>();
+            using (SqlDataReader rdr = cmd.ExecuteReader())
+            {
+                while (rdr.Read())
+                {
+                    var o = new Order();
+                    o.Id = rdr.GetInt32(0);
+                    
+                    model.Add(o);
+                }
+            }
+            con.Close();
 
+            return model;
+        }
         // should be deleted
         public void StandardMessage(int UserHostID, int UserRecipientID, string messages, string Subject, int ProductID)
         {
@@ -180,7 +197,7 @@ namespace DAL
             conn.Close();
         }
 
-        public List<Order> OrdersByUsers()
+        public List<Order> SortOrdersByUsers()
         {
             List<Order> ordersbyuser = new List<Order>();
             SqlConnection conn = new SqlConnection(cs_database.CS());

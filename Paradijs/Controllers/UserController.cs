@@ -16,9 +16,12 @@ namespace Samir.Controllers
     public class UserController : Controller
     {
 
-        private UserLogic ULogic ;
+        private UserLogic ULogic;
 
-
+        public UserController(UserLogic ulogic)
+        {
+            this.ULogic = ulogic;
+        }
         public UserController()
         {
             this.ULogic = new UserLogic();
@@ -113,11 +116,11 @@ namespace Samir.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ViewResult Login(User user)
+        public ActionResult Login(User user)
         {
             string message = "";
             bool Status = false;
-            
+
 
             if (ULogic.Checkaccount(user))
             {
@@ -130,7 +133,7 @@ namespace Samir.Controllers
                     Session["User"] = user;
                     ViewBag.Message = message;
                     ViewBag.Status = true;
-                    return View("ViewProducts", "Product");
+                    return RedirectToAction("ViewProducts", "Product");
                 }
                 message = "U account is nog niet geverifieerd, verifieer u account alstublieft en probeer nog en keer";
 
@@ -159,19 +162,19 @@ namespace Samir.Controllers
         }
 
 
-        public ActionResult AllUsers()
-        {
+        //public ActionResult AllUsers()
+        //{
 
-            if (Session["User"] != null)
-            {
-                List<User> model = new List<User>();
+        //    if (Session["User"] != null)
+        //    {
+        //        List<User> model = new List<User>();
 
-                model = ULogic.AllUsers();
-                return View(model);
+        //        model = ULogic.AllUsers();
+        //        return View(model);
 
-            }
-            return RedirectToAction("Login", "User");
-        }
+        //    }
+        //    return RedirectToAction("Login", "User");
+        //}
 
         public ActionResult DeleteUser(int id)
         {
@@ -186,7 +189,7 @@ namespace Samir.Controllers
             return i + o;
         }
 
-        
+
 
     }
 }

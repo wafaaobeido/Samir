@@ -18,7 +18,6 @@ namespace Models
         [Display(Name = "Achternaam")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "De achternaam moet nog ingevoerd worden.")]
         public string LastName { get; set; }
-         //public string Utype { get; set; }
         [Display(Name = "Geboortedatum")]
         [DataType(DataType.Date)]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString ="{0:MM/dd/yyyy}")]
@@ -53,13 +52,17 @@ namespace Models
         [Display(Name = "Remember me")]
         public bool RememberMe { get; set; }
 
-        public List<Order> Orders { get; set; }
+        public Order Order { get; set; }
         public List<Review> Reviews { get; set; }
 
         #endregion
 
         #region Constructers
-        public User ()
+        public User (Order o)
+        {
+            this.Order = o;
+        }
+        public User()
         {
 
         }
@@ -74,7 +77,7 @@ namespace Models
             {
                 return this.Email.CompareTo(other.Email);
             }
-            return 1; // 1 betekent "groter dan"; we zijn "groter dan" null.
+            return 1; 
         }
 
     }

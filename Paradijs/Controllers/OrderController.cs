@@ -12,6 +12,7 @@ namespace Samir.Web.Controllers
     {
         private OrderLogic OLogic = new OrderLogic();
         private ProductLogic PLogic = new ProductLogic();
+        private UserLogic ULogic = new UserLogic();
         // GET: Order
         [HttpGet]
         public ActionResult AddOrder(int? userid, int? id, int? hostid, Order c)
@@ -35,6 +36,7 @@ namespace Samir.Web.Controllers
 
             if (message == "succes")
             {
+                Session["Order"] = message;
                 return RedirectToAction("ViewProducts", "Product");
             }
             return View();
@@ -53,9 +55,20 @@ namespace Samir.Web.Controllers
 
             }
             return RedirectToAction("Login", "User");
+        }
 
+        public ActionResult AllUsers(int id)
+        {
 
+            if (Session["User"] != null)
+            {
+                List<User> model = new List<User>();
 
+                model = ULogic.AllUsers();
+                return View(model);
+
+            }
+            return RedirectToAction("Login", "User");
         }
 
         [HttpGet]

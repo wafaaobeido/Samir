@@ -35,7 +35,7 @@ namespace Models
             Ordertime = DateTime.Now;
             DeliveryTime = Ordertime.AddMonths(1);
         }
-
+ 
         #endregion
 
        

@@ -10,6 +10,7 @@
 @using Models
 @{
     var user = Session["User"] as User;
+    var order = Session["Order"] as Order;
 }
 <body>
 
@@ -38,20 +39,15 @@
                         {
 
                             <li>@Html.ActionLink("Mijn producten", "MyProducts", "Product")</li>
-                            <li>@Html.ActionLink("Alle bestellingen", "OrdersByUser", "Order")</li>
-                            <li>@Html.ActionLink("Klanten", "AllUsers", new { id = user.Id, controller = "User" })</li>
+                            <li>@Html.ActionLink("Klanten", "AllUsers", new { id = user.Id, controller = "Order" })</li>
 
                         }
                         else
                         {
-                            //Need implentation
                             <li>@Html.ActionLink("Mijn Orders", "MyOrders", "Order", new { id = user.Id }, null)</li>
-                            //
-
                         }
                     }
 
-                    @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                 </ul>
             </div>
         </div>
