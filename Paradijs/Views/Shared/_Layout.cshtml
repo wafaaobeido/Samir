@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Arimo" rel="stylesheet">
     <title>@ViewBag.Title - Samir</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -22,7 +23,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Samir", "ViewProducts", "Product", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Paradijs", "ViewProducts", "Product", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
@@ -31,7 +32,7 @@
                     {
                         <li>@Html.ActionLink("Log in", "Login", "User")</li>
                     }
-                    @if (Session["User"] != null)
+                    @if (Session["Useremail"] != null)
                     {
                         <li>@Html.ActionLink("My messages", "ViewAllMessages", "Message", new { id = user.Id }, null)</li>
 

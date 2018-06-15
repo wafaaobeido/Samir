@@ -60,6 +60,7 @@ namespace Samir.Tests.Controllers
             Assert.AreEqual(aantal + 1, ULogic.AllUsers().Count());
         }
 
+
         [TestMethod]
         public void Verified()
         {

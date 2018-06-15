@@ -10,9 +10,9 @@
 }
 <link href="~/Content/Site.css" rel="stylesheet" />
 <div>
-    <h4>Gerechten</h4>
+    <h3>Gerechten</h3>
 
-    @if (Session["User"] != null && user.Email == "samirobeido76@gmail.com")
+    @if (Session["Useremail"] != null && user.Email == "samirobeido76@gmail.com")
     {
         <p>
             @Html.ActionLink("Voeg nieuwe gerecht toe...", "AddProduct", "Product")

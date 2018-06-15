@@ -23,10 +23,8 @@ namespace Models
         [Display(Name = "Photo")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Kies tenminste ��n afbeelding")]
         public List<string> Picture { get; set; }
-        [Display(Name = "Reviews")]
-        public List<Review> Reviews { get; set; }
-        [Display(Name = "Orders")]
-        public List<Order> Orders { get; set; }
+
+
 
         #endregion
 

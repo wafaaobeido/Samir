@@ -129,12 +129,12 @@ namespace DAL
 
         //Bijwerken ......
 
-        public void DeleteProduct(Product product)
+        public void DeleteProduct(int id)
         {
             SqlConnection con = new SqlConnection(cs_database.CS());
             con.Open(); string query = "Delete From Order Where Id = @Id";
             SqlCommand cmd = new SqlCommand(query, con);
-            cmd.Parameters.AddWithValue("@Id", product.Id);
+            cmd.Parameters.AddWithValue("@Id", id);
             cmd.ExecuteNonQuery();
             con.Close();
         }

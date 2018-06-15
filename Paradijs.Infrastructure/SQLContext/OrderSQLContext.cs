@@ -196,7 +196,7 @@ namespace DAL
             cmd1.ExecuteNonQuery();
             conn.Close();
         }
-
+        //................
         public List<Order> SortOrdersByUsers()
         {
             List<Order> ordersbyuser = new List<Order>();
@@ -229,7 +229,6 @@ namespace DAL
         }
 
         // Bijwerken
-
         public void DeleteOrder()
         {
             Order order = new Order();

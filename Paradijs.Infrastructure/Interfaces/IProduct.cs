@@ -13,7 +13,9 @@ namespace DAL
         Product Details(int id);
         Product AddProduct(Product product);
         Product ByID(int id);
-        void DeleteProduct(Product product);
+
+        // Bijwerken
+        void DeleteProduct(int id);
         void EditProduct(Product product);
 
     }

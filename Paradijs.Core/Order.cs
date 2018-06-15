@@ -10,18 +10,13 @@ namespace Models
     public class Order 
     {
         #region Properties
+
         public int Id { get; set; }
-        //[Display(Name = "naam Klant")]
         public User User { get; set; }
-        //[Display(Name = "naam Verkoper")]
         public User verkoper { get; set; }
-        //[Display(Name = "Order time")]
         public DateTime Ordertime { get; set; }
-        //[Display(Name = "Delivery time")]
         public DateTime DeliveryTime { get; set; }
-        //[Display(Name = "naam Product")]
         public Product product { get; set; }
-        public List<Product> Products { get; set; }
 
 
         #endregion

@@ -53,7 +53,6 @@ namespace Models
         public bool RememberMe { get; set; }
 
         public Order Order { get; set; }
-        public List<Review> Reviews { get; set; }
 
         #endregion
 
